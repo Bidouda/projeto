@@ -10,9 +10,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int currentPageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    int currentPageIndex = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text("Bookmark"),
@@ -36,6 +36,72 @@ class _HomeState extends State<Home> {
         },
         selectedIndex: currentPageIndex,
       ),
+      body: <Widget>[
+        //Current
+        Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+            child: Center(
+              child: Text(
+                'Current',
+              ),
+            ),
+          ),
+        ),
+
+        //Paused
+        Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+            child: Center(
+              child: Text(
+                'Paused',
+              ),
+            ),
+          ),
+        ),
+
+        //Completed
+        Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+            child: Center(
+              child: Text(
+                'Completed',
+              ),
+            ),
+          ),
+        ),
+
+        //Dropped
+        Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+            child: Center(
+              child: Text(
+                'Dropped',
+              ),
+            ),
+          ),
+        ),
+
+        //Planning
+        Card(
+          shadowColor: Colors.transparent,
+          margin: const EdgeInsets.all(8.0),
+          child: SizedBox.expand(
+            child: Center(
+              child: Text(
+                'Planning',
+              ),
+            ),
+          ),
+        ),
+      ][currentPageIndex],
     );
   }
 
