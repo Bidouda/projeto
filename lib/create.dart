@@ -3,7 +3,7 @@ import 'control.dart';
 import 'grupo.dart';
 
 class Create extends StatefulWidget {
-  const Create({super.key});
+  const Create({Key? key}) : super(key: key);
 
   @override
   State<Create> createState() => _CreateState();
@@ -11,13 +11,13 @@ class Create extends StatefulWidget {
 
 class _CreateState extends State<Create> {
   final _tituloController = TextEditingController();
-  int? _selectedCategoria; // Use a nullable int for the dropdown selection
+  int? _selectedCategoria;
   bool _showSuccessCard = false;
   bool _showErrorCard = false;
   String? _errorMessage;
 
   Future<void> _insertGrupo(String titulo, int categoria) async {
-    Control control = new Control();
+    Control control = Control();
     Grupo grupo = Grupo(titulo: titulo, categoria: categoria);
     await control.insertDatabase(grupo);
   }
@@ -43,20 +43,25 @@ class _CreateState extends State<Create> {
       appBar: AppBar(
         title: Text("Create"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: _tituloController,
-              decoration: InputDecoration(labelText: "Title"),
+              decoration: InputDecoration(
+                labelText: "Title",
+                border: OutlineInputBorder(),
+              ),
             ),
+            SizedBox(height: 20),
             DropdownButtonFormField(
-              value: _selectedCategoria, // Set initial value
+              value: _selectedCategoria,
               items: [
                 DropdownMenuItem(
                   child: Text("Current"),
-                  value: 1, // Assuming category IDs start from 1
+                  value: 1,
                 ),
                 DropdownMenuItem(
                   child: Text("Paused"),
@@ -77,11 +82,15 @@ class _CreateState extends State<Create> {
               ],
               onChanged: (value) {
                 setState(() {
-                  _selectedCategoria = value as int;
+                  _selectedCategoria = value as int?;
                 });
               },
-              hint: Text("Select Category"),
+              decoration: InputDecoration(
+                labelText: "Select Category",
+                border: OutlineInputBorder(),
+              ),
             ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 if (_tituloController.text.isNotEmpty && _selectedCategoria != null) {
@@ -93,18 +102,21 @@ class _CreateState extends State<Create> {
               },
               child: Text("Create"),
             ),
+            SizedBox(height: 20),
             if (_showSuccessCard)
               Card(
+                color: Colors.green.withOpacity(0.2),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Group created successfully!"),
+                  child: Text("Group created successfully!", textAlign: TextAlign.center),
                 ),
               ),
             if (_showErrorCard)
               Card(
+                color: Colors.red.withOpacity(0.2),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(_errorMessage!),
+                  child: Text(_errorMessage!, textAlign: TextAlign.center),
                 ),
               ),
           ],
