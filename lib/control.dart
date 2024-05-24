@@ -48,10 +48,10 @@ class Control{
   Future insertDatabase(Grupo grupo) async{
     Database db = await startDatabase();
     String sql="";
-    sql = "INSERT INTO Grupos (titulo, categoria) VALUES ('" + grupo.titulo + "', " + grupo.categoria.toString() + ");";
+    sql = "INSERT INTO grupos (titulo, categoria) VALUES ('" + grupo.titulo + "', " + grupo.categoria.toString() + ");";
     try {
       await db.rawInsert(sql);
-      print('Cliente inserido!');
+      print('Grupo inserido!');
     } finally {
       //await db.close();
     }
