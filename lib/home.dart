@@ -1,9 +1,10 @@
-import "package:flutter/material.dart";
-import "create.dart";
-import "search.dart";
+import 'package:flutter/material.dart';
+import 'create.dart';
+import 'search.dart';
+import 'group_widget.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -11,14 +12,25 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentPageIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Bookmark"),
         actions: [
-          IconButton(onPressed: () {_openPage(context, Search());}, icon: Icon(Icons.search)),
-          IconButton(onPressed: () {_openPage(context, Create());}, icon: Icon(Icons.add))
+          IconButton(
+            onPressed: () {
+              _openPage(context, Search());
+            },
+            icon: Icon(Icons.search),
+          ),
+          IconButton(
+            onPressed: () {
+              _openPage(context, Create());
+            },
+            icon: Icon(Icons.add),
+          ),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -36,79 +48,38 @@ class _HomeState extends State<Home> {
         },
         selectedIndex: currentPageIndex,
       ),
-      body: <Widget>[
-        //Current
-        Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-            child: Center(
-              child: Text(
-                'Current',
-              ),
-            ),
-          ),
-        ),
-
-        //Paused
-        Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-            child: Center(
-              child: Text(
-                'Paused',
-              ),
-            ),
-          ),
-        ),
-
-        //Completed
-        Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-            child: Center(
-              child: Text(
-                'Completed',
-              ),
-            ),
-          ),
-        ),
-
-        //Dropped
-        Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-            child: Center(
-              child: Text(
-                'Dropped',
-              ),
-            ),
-          ),
-        ),
-
-        //Planning
-        Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-            child: Center(
-              child: Text(
-                'Planning',
-              ),
-            ),
-          ),
-        ),
-      ][currentPageIndex],
+      body: _getPage(currentPageIndex),
     );
   }
 
-  _openPage(ctx, page) {
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return _createPage(() => GruposListView(category: 1)); // Current
+      case 1:
+        return _createPage(() => GruposListView(category: 2)); // Paused
+      case 2:
+        return _createPage(() => GruposListView(category: 3)); // Completed
+      case 3:
+        return _createPage(() => GruposListView(category: 4)); // Dropped
+      case 4:
+        return _createPage(() => GruposListView(category: 5)); // Planning
+      default:
+        return Container(); // Fallback for unknown indices
+    }
+  }
+
+  Widget _createPage(Widget Function() pageBuilder) {
+    return KeyedSubtree(
+      key: UniqueKey(),
+      child: pageBuilder(),
+    );
+  }
+
+  void _openPage(BuildContext ctx, Widget page) {
     Navigator.push(
       ctx,
-      MaterialPageRoute(builder: (BuildContext context){
+      MaterialPageRoute(builder: (BuildContext context) {
         return page;
       }),
     );
