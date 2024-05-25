@@ -301,7 +301,7 @@ class _BookState extends State<Book> {
                         SizedBox(width: 10),
                         ElevatedButton.icon(
                           onPressed: _showInputFields ? () {
-                            // Placeholder for onPressed action
+                            _selectDate(context, _inicioController); // Call _selectDate method
                           } : null,
                           icon: Icon(Icons.calendar_today),
                           label: Text('Select Start Date'),
@@ -329,7 +329,7 @@ class _BookState extends State<Book> {
                         SizedBox(width: 10),
                         ElevatedButton.icon(
                           onPressed: _showInputFields ? () {
-                            // Placeholder for onPressed action
+                            _selectDate(context, _fimController); // Call _selectDate method
                           } : null,
                           icon: Icon(Icons.calendar_today),
                           label: Text('Select End Date'),
