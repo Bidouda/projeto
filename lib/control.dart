@@ -60,9 +60,11 @@ class Control {
         descricao_autor TEXT
       );
     ''');
+    await db.execute('INSERT INTO autores (descricao_autor) VALUES ("Placeholder")');
     await db.execute('''
       CREATE TABLE entradas (
         id_entrada INTEGER PRIMARY KEY AUTOINCREMENT,
+        titulo VARCHAR(200),
         grupo INTEGER,
         categoria INTEGER,
         tipo INTEGER,
@@ -103,5 +105,15 @@ class Control {
   Future<List<Map<String, dynamic>>> queryFindCategoria(int categoria) async {
     Database db = await startDatabase();
     return await db.query('grupos', where: 'categoria = ?', whereArgs: [categoria]);
+  }
+
+  Future<void> insertEntrada(Map<String, dynamic> entrada) async {
+    Database db = await startDatabase();
+    await db.insert('entradas', entrada);
+  }
+
+  Future<List<Map<String, dynamic>>> getAllAuthors() async {
+    Database db = await startDatabase();
+    return await db.query('autores');
   }
 }
