@@ -13,6 +13,7 @@ class Book extends StatefulWidget {
 }
 
 class _BookState extends State<Book> {
+  bool _isBookAdded = false;
   late TextEditingController _tituloController;
   late TextEditingController _tituloBooksController;
   late int _categoria;
@@ -74,6 +75,9 @@ class _BookState extends State<Book> {
     };
 
     await _dbService.insertEntrada(entrada);
+    setState(() {
+      _isBookAdded = true;
+    });
     print('Entrada inserida!');
   }
 
@@ -192,7 +196,7 @@ class _BookState extends State<Book> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Titulo:', // Add this text field
+                      'Title:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
@@ -205,7 +209,7 @@ class _BookState extends State<Book> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Posição:',
+                      'Position:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
@@ -247,37 +251,53 @@ class _BookState extends State<Book> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Start:',
+                      'Start Date:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
-                    TextField(
-                        controller: _inicioController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter start date',
-                        )
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _selectDate(context, _inicioController),
-                      child: Text('Select Start Date'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _inicioController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter start date',
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton.icon(
+                          onPressed: () => _selectDate(context, _inicioController),
+                          icon: Icon(Icons.calendar_today),
+                          label: Text('Select Start Date'),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'End:',
-                      style: TextStyle(fontSize:                  18, fontWeight: FontWeight.bold),
+                      'End Date:',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
-                    TextField(
-                        controller: _fimController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter end date',
-                        )
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _selectDate(context, _fimController),
-                      child: Text('Select End Date'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _fimController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter end date',
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        ElevatedButton.icon(
+                          onPressed: () => _selectDate(context, _fimController),
+                          icon: Icon(Icons.calendar_today),
+                          label: Text('Select End Date'),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -350,8 +370,42 @@ class _BookState extends State<Book> {
                     SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
-                        onPressed: _insertEntrada,
+                        onPressed: () {
+                          _insertEntrada();
+                          setState(() {
+                            _isBookAdded = true;
+                          });
+                        },
                         child: Text('Add Entry'),
+                      ),
+                    ),
+                    Visibility(
+                      visible: _isBookAdded,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 3,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.check, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
+                              'Book added',
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
