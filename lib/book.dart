@@ -27,6 +27,7 @@ class _BookState extends State<Book> {
 
   late int _tipo;
   late int _autor;
+  String _sortBy = 'title'; // Sorting criteria
 
   Control _dbService = Control(); // Instantiate the database service
 
@@ -45,9 +46,7 @@ class _BookState extends State<Book> {
 
     _tipo = 1; // Initialize with default value
     _autor = 1; // Initialize with default value
-    // New controller for Books tab's title
   }
-
 
   @override
   void dispose() {
@@ -96,16 +95,30 @@ class _BookState extends State<Book> {
     }
   }
 
+  Future<List<Map<String, dynamic>>> _getBooksByGroup() async {
+    final books = await _dbService.queryFindGrupo(widget.idGrupo);
+
+    // Sort books based on the current sorting criteria
+    if (_sortBy == 'title') {
+      books.sort((a, b) => a['titulo'].compareTo(b['titulo']));
+    } else if (_sortBy == 'progress') {
+      books.sort((a, b) => a['progresso'].compareTo(b['progresso']));
+    }
+
+    return books;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Group'),
           bottom: TabBar(
             tabs: [
               Tab(text: 'Info'),
+              Tab(text: 'Insert'),
               Tab(text: 'Books'),
             ],
           ),
@@ -188,7 +201,7 @@ class _BookState extends State<Book> {
                 ],
               ),
             ),
-            // Books Tab
+            // Insert Tab
             SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.all(20.0),
@@ -412,6 +425,76 @@ class _BookState extends State<Book> {
                 ),
               ),
             ),
+            // Books Tab
+            FutureBuilder<List<Map<String, dynamic>>>(
+              future: _getBooksByGroup(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No books found.'));
+                }
+
+                final books = snapshot.data!;
+
+                return Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Sort by:'),
+                          DropdownButton<String>(
+                            value: _sortBy,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _sortBy = newValue!;
+                              });
+                            },
+                            items: <String>['title', 'progress']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value.capitalize()),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: books.length,
+                        itemBuilder: (context, index) {
+                          final book = books[index];
+                          return Card(
+                            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                            child: ListTile(
+                              leading: Icon(Icons.book),
+                              title: Text(book['titulo']),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Position: ${book['posicao']}'),
+                                  Text('Progress: ${book['progresso']}'),
+                                ],
+                              ),
+                              trailing: Icon(Icons.arrow_forward),
+                              onTap: () {
+                                // Handle book tap
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -419,3 +502,9 @@ class _BookState extends State<Book> {
   }
 }
 
+// Utility extension to capitalize a string
+extension StringExtension on String {
+  String capitalize() {
+    return this[0].toUpperCase() + this.substring(1);
+  }
+}

@@ -33,45 +33,48 @@ class _GruposListViewState extends State<GruposListView> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? Center(child: CircularProgressIndicator())
-        : ListView.builder(
-      itemCount: _grupos.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Book(
-                  titulo: _grupos[index].titulo,
-                  categoria: _grupos[index].categoria,
-                  idGrupo: _grupos[index].idGrupo!, // Pass idGrupo as parameter
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Groups'),
+      ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _grupos.isEmpty
+          ? Center(child: Text('No groups found.'))
+          : ListView.builder(
+        itemCount: _grupos.length,
+        itemBuilder: (context, index) {
+          final grupo = _grupos[index];
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: ListTile(
+              leading: Icon(Icons.book_rounded),
+              title: Text(grupo.titulo, style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 4),
+                  Text('Category: ${grupo.categoria}'),
+                  Text('ID: ${grupo.idGrupo}'),
+                ],
               ),
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: ListTile(
-                title: Text(_grupos[index].titulo),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Category: ${_grupos[index].categoria}'),
-                    Text('ID: ${_grupos[index].idGrupo}'), // Displaying id_grupo as subtitle
-                  ],
-                ),
-              ),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Book(
+                      titulo: grupo.titulo,
+                      categoria: grupo.categoria,
+                      idGrupo: grupo.idGrupo!, // Pass idGrupo as parameter
+                    ),
+                  ),
+                );
+              },
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

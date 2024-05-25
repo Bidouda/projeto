@@ -121,4 +121,9 @@ class Control {
     Database db = await startDatabase();
     await db.insert('autores', {'descricao_autor': nome});
   }
+
+  Future<List<Map<String, dynamic>>> queryFindGrupo(int grupo) async {
+    Database db = await startDatabase();
+    return await db.query('entradas', where: 'grupo = ?', whereArgs: [grupo]);
+  }
 }
