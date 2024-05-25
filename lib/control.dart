@@ -124,7 +124,7 @@ class Control {
 
   Future<List<Map<String, dynamic>>> queryFindGrupo(int grupo) async {
     Database db = await startDatabase();
-    return await db.query('entradas', where: 'grupo = ?', whereArgs: [grupo]);
+    return await db.query('entradas', where: 'grupo = ?', whereArgs: [grupo], orderBy: 'posicao');
   }
 
   Future<List<Map<String, dynamic>>> queryFindEntradas(String titulo) async {
