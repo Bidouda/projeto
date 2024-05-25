@@ -46,6 +46,7 @@ class _GruposListViewState extends State<GruposListView> {
                 builder: (context) => Book(
                   titulo: _grupos[index].titulo,
                   categoria: _grupos[index].categoria,
+                  idGrupo: _grupos[index].idGrupo!, // Pass idGrupo as parameter
                 ),
               ),
             );
@@ -59,7 +60,13 @@ class _GruposListViewState extends State<GruposListView> {
               ),
               child: ListTile(
                 title: Text(_grupos[index].titulo),
-                subtitle: Text('Category: ${_grupos[index].categoria}'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Category: ${_grupos[index].categoria}'),
+                    Text('ID: ${_grupos[index].idGrupo}'), // Displaying id_grupo as subtitle
+                  ],
+                ),
               ),
             ),
           ),

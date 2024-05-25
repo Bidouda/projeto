@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class Book extends StatefulWidget {
   final String titulo;
   final int categoria;
+  final int idGrupo; // Add idGrupo parameter
 
-  Book({required this.titulo, required this.categoria});
+  Book({required this.titulo, required this.categoria, required this.idGrupo}); // Receive idGrupo as part of the constructor
 
   @override
   _BookState createState() => _BookState();
@@ -13,12 +14,14 @@ class Book extends StatefulWidget {
 class _BookState extends State<Book> {
   late TextEditingController _tituloController;
   late int _categoria;
+  late int _idGrupo; // Store idGrupo in widget's state
 
   @override
   void initState() {
     super.initState();
     _tituloController = TextEditingController(text: widget.titulo);
     _categoria = widget.categoria;
+    _idGrupo = widget.idGrupo; // Store idGrupo from widget's constructor in state
   }
 
   @override
