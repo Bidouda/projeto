@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
-import 'control.dart'; // Import the database service class
+import 'control.dart';
 
 class Book extends StatefulWidget {
   final String titulo;
   final int categoria;
-  final int idGrupo; // Add idGrupo parameter
+  final int idGrupo;
 
-  Book({required this.titulo, required this.categoria, required this.idGrupo}); // Receive idGrupo as part of the constructor
+  Book({required this.titulo, required this.categoria, required this.idGrupo});
 
   @override
   _BookState createState() => _BookState();
 }
 
 class _BookState extends State<Book> {
+  late int _tipo;
+  late int _autor;
+  List<Map<String, dynamic>> _authors = [];
   bool _isBookAdded = false;
   late TextEditingController _tituloController;
   late TextEditingController _tituloBooksController;
   late int _categoria;
-  late int _idGrupo; // Store idGrupo in widget's state
-
+  late int _idGrupo;
   late TextEditingController _posicaoController;
   late TextEditingController _progressoController;
   late TextEditingController _totalController;
   late TextEditingController _inicioController;
   late TextEditingController _fimController;
+  late bool _showInputFields = true;
 
-  late int _tipo;
-  late int _autor;
-  String _sortBy = 'title'; // Sorting criteria
-
-  Control _dbService = Control(); // Instantiate the database service
+  Control _dbService = Control();
 
   @override
   void initState() {
     super.initState();
-    _tituloController = TextEditingController(text: widget.titulo); // Info tab controller
+    _tituloController = TextEditingController(text: widget.titulo);
     _categoria = widget.categoria;
-    _idGrupo = widget.idGrupo; // Store idGrupo from widget's constructor in state
+    _idGrupo = widget.idGrupo;
     _tituloBooksController = TextEditingController();
     _posicaoController = TextEditingController();
     _progressoController = TextEditingController();
@@ -44,8 +43,9 @@ class _BookState extends State<Book> {
     _inicioController = TextEditingController();
     _fimController = TextEditingController();
 
-    _tipo = 1; // Initialize with default value
-    _autor = 1; // Initialize with default value
+    _tipo = 1;
+    _autor = 1;
+    _loadAuthors();
   }
 
   @override
@@ -59,26 +59,55 @@ class _BookState extends State<Book> {
     super.dispose();
   }
 
+  void _loadAuthors() async {
+    final authors = await _dbService.getAllAuthors();
+    setState(() {
+      _authors = authors;
+    });
+  }
+
+  bool _addingAnother = false;
+
   void _insertEntrada() async {
     Map<String, dynamic> entrada = {
-      'titulo': _tituloBooksController.text, // Add 'titulo' parameter
+      'titulo': _tituloBooksController.text,
       'grupo': _idGrupo,
       'categoria': _categoria,
       'tipo': _tipo,
       'autor': _autor,
-      'posicao': int.tryParse(_posicaoController.text),
-      'progresso': int.tryParse(_progressoController.text),
-      'total': int.tryParse(_totalController.text),
+      'posicao': int.tryParse(_posicaoController.text) ?? 0,
+      'progresso': int.tryParse(_progressoController.text) ?? 0,
+      'total': int.tryParse(_totalController.text) ?? 0,
       'inicio': _inicioController.text,
       'fim': _fimController.text,
     };
 
-    await _dbService.insertEntrada(entrada);
-    setState(() {
-      _isBookAdded = true;
-    });
-    print('Entrada inserida!');
+    if (!_addingAnother) {
+      await _dbService.insertEntrada(entrada);
+      setState(() {
+        _addingAnother = true;
+        // Clear text fields
+        _tituloBooksController.clear();
+        _posicaoController.clear();
+        _progressoController.clear();
+        _totalController.clear();
+        _inicioController.clear();
+        _fimController.clear();
+        // Reset dropdown values
+        _tipo = 1;
+        _autor = 1;
+        _showInputFields = false; // Hide input fields after adding entry
+      });
+      print('Entrada inserida!');
+    } else {
+      setState(() {
+        _addingAnother = false;
+        _showInputFields = true; // Show input fields when adding another
+      });
+    }
   }
+
+
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
@@ -93,19 +122,6 @@ class _BookState extends State<Book> {
         controller.text = formattedDate; // Update the text field with the selected date
       });
     }
-  }
-
-  Future<List<Map<String, dynamic>>> _getBooksByGroup() async {
-    final books = await _dbService.queryFindGrupo(widget.idGrupo);
-
-    // Sort books based on the current sorting criteria
-    if (_sortBy == 'title') {
-      books.sort((a, b) => a['titulo'].compareTo(b['titulo']));
-    } else if (_sortBy == 'progress') {
-      books.sort((a, b) => a['progresso'].compareTo(b['progresso']));
-    }
-
-    return books;
   }
 
   @override
@@ -125,7 +141,6 @@ class _BookState extends State<Book> {
         ),
         body: TabBarView(
           children: [
-            // Info Tab
             Padding(
               padding: EdgeInsets.all(20.0),
               child: Column(
@@ -185,7 +200,7 @@ class _BookState extends State<Book> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Placeholder for Edit button action
+                          // Placeholder for Update button action
                         },
                         child: Text('Edit'),
                       ),
@@ -201,7 +216,6 @@ class _BookState extends State<Book> {
                 ],
               ),
             ),
-            // Insert Tab
             SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.all(20.0),
@@ -219,6 +233,7 @@ class _BookState extends State<Book> {
                         border: OutlineInputBorder(),
                         hintText: 'Enter title',
                       ),
+                      enabled: _showInputFields,
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -232,6 +247,7 @@ class _BookState extends State<Book> {
                         border: OutlineInputBorder(),
                         hintText: 'Enter position',
                       ),
+                      enabled: _showInputFields,
                       keyboardType: TextInputType.number,
                     ),
                     SizedBox(height: 20),
@@ -246,6 +262,7 @@ class _BookState extends State<Book> {
                         border: OutlineInputBorder(),
                         hintText: 'Enter progress',
                       ),
+                      enabled: _showInputFields,
                       keyboardType: TextInputType.number,
                     ),
                     SizedBox(height: 20),
@@ -260,6 +277,7 @@ class _BookState extends State<Book> {
                         border: OutlineInputBorder(),
                         hintText: 'Enter total',
                       ),
+                      enabled: _showInputFields,
                       keyboardType: TextInputType.number,
                     ),
                     SizedBox(height: 20),
@@ -277,11 +295,14 @@ class _BookState extends State<Book> {
                               border: OutlineInputBorder(),
                               hintText: 'Enter start date',
                             ),
+                            enabled: _showInputFields,
                           ),
                         ),
                         SizedBox(width: 10),
                         ElevatedButton.icon(
-                          onPressed: () => _selectDate(context, _inicioController),
+                          onPressed: _showInputFields ? () {
+                            // Placeholder for onPressed action
+                          } : null,
                           icon: Icon(Icons.calendar_today),
                           label: Text('Select Start Date'),
                         ),
@@ -302,11 +323,14 @@ class _BookState extends State<Book> {
                               border: OutlineInputBorder(),
                               hintText: 'Enter end date',
                             ),
+                            enabled: _showInputFields,
                           ),
                         ),
                         SizedBox(width: 10),
                         ElevatedButton.icon(
-                          onPressed: () => _selectDate(context, _fimController),
+                          onPressed: _showInputFields ? () {
+                            // Placeholder for onPressed action
+                          } : null,
                           icon: Icon(Icons.calendar_today),
                           label: Text('Select End Date'),
                         ),
@@ -320,11 +344,11 @@ class _BookState extends State<Book> {
                     SizedBox(height: 8),
                     DropdownButton<int>(
                       value: _tipo,
-                      onChanged: (value) {
+                      onChanged: _showInputFields ? (value) {
                         setState(() {
                           _tipo = value!;
                         });
-                      },
+                      } : null,
                       items: [
                         DropdownMenuItem(
                           value: 1,
@@ -354,42 +378,27 @@ class _BookState extends State<Book> {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
-                    FutureBuilder<List<Map<String, dynamic>>>(
-                      future: _dbService.getAllAuthors(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final authors = snapshot.data!;
-                          return DropdownButton<int>(
-                            value: _autor,
-                            onChanged: (value) {
-                              setState(() {
-                                _autor = value!;
-                              });
-                            },
-                            items: authors.map((author) {
-                              return DropdownMenuItem<int>(
-                                value: author['id_autor'],
-                                child: Text(author['descricao_autor']),
-                              );
-                            }).toList(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text("Error: ${snapshot.error}");
-                        }
-                        // By default, show a loading spinner.
-                        return CircularProgressIndicator();
-                      },
+                    DropdownButton<int>(
+                      value: _autor,
+                      onChanged: _showInputFields ? (value) {
+                        setState(() {
+                          _autor = value!;
+                        });
+                      } : null,
+                      items: _authors.map((author) {
+                        return DropdownMenuItem<int>(
+                          value: author['id_autor'],
+                          child: Text(author['descricao_autor']),
+                        );
+                      }).toList(),
                     ),
                     SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
                           _insertEntrada();
-                          setState(() {
-                            _isBookAdded = true;
-                          });
                         },
-                        child: Text('Add Entry'),
+                        child: Text(_addingAnother ? 'Add Another' : 'Add Entry'),
                       ),
                     ),
                     Visibility(
@@ -405,7 +414,7 @@ class _BookState extends State<Book> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 3,
                               blurRadius: 7,
-                              offset: Offset(0, 3), // changes position of shadow
+                              offset: Offset(0, 3),
                             ),
                           ],
                         ),
@@ -425,9 +434,8 @@ class _BookState extends State<Book> {
                 ),
               ),
             ),
-            // Books Tab
             FutureBuilder<List<Map<String, dynamic>>>(
-              future: _getBooksByGroup(),
+              future: _dbService.queryFindGrupo(_idGrupo),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -441,30 +449,6 @@ class _BookState extends State<Book> {
 
                 return Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Sort by:'),
-                          DropdownButton<String>(
-                            value: _sortBy,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _sortBy = newValue!;
-                              });
-                            },
-                            items: <String>['title', 'progress']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value.capitalize()),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: books.length,
@@ -502,7 +486,6 @@ class _BookState extends State<Book> {
   }
 }
 
-// Utility extension to capitalize a string
 extension StringExtension on String {
   String capitalize() {
     return this[0].toUpperCase() + this.substring(1);
