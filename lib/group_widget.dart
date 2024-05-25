@@ -48,7 +48,7 @@ class _GruposListViewState extends State<GruposListView> {
           return Card(
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListTile(
-              leading: Icon(Icons.book_rounded),
+              leading: Icon(Icons.folder),
               title: Text(grupo.titulo, style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

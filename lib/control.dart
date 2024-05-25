@@ -126,4 +126,9 @@ class Control {
     Database db = await startDatabase();
     return await db.query('entradas', where: 'grupo = ?', whereArgs: [grupo]);
   }
+
+  Future<List<Map<String, dynamic>>> queryFindEntradas(String titulo) async {
+    Database db = await startDatabase();
+    return await db.query('entradas', where: 'titulo LIKE ?', whereArgs: ['%$titulo%']);
+  }
 }
