@@ -116,4 +116,9 @@ class Control {
     Database db = await startDatabase();
     return await db.query('autores');
   }
+
+  Future<void> insertAutor(String nome) async {
+    Database db = await startDatabase();
+    await db.insert('autores', {'descricao_autor': nome});
+  }
 }
