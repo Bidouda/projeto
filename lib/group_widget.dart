@@ -34,9 +34,6 @@ class _GruposListViewState extends State<GruposListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Groups'),
-      ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : _grupos.isEmpty

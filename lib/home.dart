@@ -12,6 +12,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentPageIndex = 0;
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,29 +51,27 @@ class _HomeState extends State<Home> {
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
+            _pageController.jumpToPage(index);
           });
         },
         selectedIndex: currentPageIndex,
       ),
-      body: _getPage(currentPageIndex),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        children: [
+          _createPage(() => GruposListView(category: 1)), // Current
+          _createPage(() => GruposListView(category: 2)), // Paused
+          _createPage(() => GruposListView(category: 3)), // Completed
+          _createPage(() => GruposListView(category: 4)), // Dropped
+          _createPage(() => GruposListView(category: 5)), // Planning
+        ],
+      ),
     );
-  }
-
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return _createPage(() => GruposListView(category: 1)); // Current
-      case 1:
-        return _createPage(() => GruposListView(category: 2)); // Paused
-      case 2:
-        return _createPage(() => GruposListView(category: 3)); // Completed
-      case 3:
-        return _createPage(() => GruposListView(category: 4)); // Dropped
-      case 4:
-        return _createPage(() => GruposListView(category: 5)); // Planning
-      default:
-        return Container(); // Fallback for unknown indices
-    }
   }
 
   Widget _createPage(Widget Function() pageBuilder) {
