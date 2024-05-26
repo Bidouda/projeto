@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'control.dart';
+import 'detail_page.dart';
 
 class Book extends StatefulWidget {
   final String titulo;
@@ -455,20 +456,26 @@ class _BookState extends State<Book> {
                         itemBuilder: (context, index) {
                           final book = books[index];
                           return Card(
-                            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Updated margin
                             child: ListTile(
-                              leading: Icon(Icons.book),
-                              title: Text(book['titulo']),
+                              leading: Icon(Icons.book), // Updated leading icon
+                              title: Text(book['titulo'], style: TextStyle(fontWeight: FontWeight.bold)), // Updated title style
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  SizedBox(height: 4),
                                   Text('Position: ${book['posicao']}'),
-                                  Text('Progress: ${book['progresso']}'),
+                                  Text('ID: ${book['id_entrada']}'),
                                 ],
-                              ),
-                              trailing: Icon(Icons.arrow_forward),
+                              ), // Updated subtitle
+                              trailing: Icon(Icons.arrow_forward), // Added trailing icon
                               onTap: () {
-                                // Handle book tap
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPage(idEntrada: book['id_entrada']),
+                                  ),
+                                );
                               },
                             ),
                           );

@@ -131,4 +131,18 @@ class Control {
     Database db = await startDatabase();
     return await db.query('entradas', where: 'titulo LIKE ?', whereArgs: ['%$titulo%']);
   }
+
+  Future<Map<String, dynamic>?> getEntradaById(int idEntrada) async {
+    Database db = await startDatabase();
+    List<Map<String, dynamic>> entradas = await db.query(
+      'entradas',
+      where: 'id_entrada = ?',
+      whereArgs: [idEntrada],
+    );
+    if (entradas.isNotEmpty) {
+      return entradas.first;
+    } else {
+      return null;
+    }
+  }
 }
