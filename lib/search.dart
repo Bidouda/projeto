@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'control.dart'; // Import the database service class
 import 'book.dart'; // Import the Book widget
+import 'detail_page.dart'; // Import the DetailPage widget
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -170,14 +171,20 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: 4),
-                            Text('Category: ${book['categoria']}'),
-                            Text('Type: ${book['tipo']}'),
-                            Text('Author: ${book['autor']}'),
+                            Text('Position: ${book['posicao']}'),
+                            Text('ID: ${book['id_entrada']}'),
                           ],
                         ),
                         trailing: Icon(Icons.arrow_forward),
                         onTap: () {
-                          // Handle tap event
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailPage(
+                                idEntrada: book['id_entrada'],
+                              ),
+                            ),
+                          );
                         },
                       ),
                     );
@@ -191,3 +198,4 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     );
   }
 }
+
