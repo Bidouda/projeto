@@ -51,7 +51,7 @@ class _GruposListViewState extends State<GruposListView> {
             child: ListTile(
               contentPadding: EdgeInsets.all(16), // Add padding
               leading: CircleAvatar( // Use CircleAvatar for rounded leading icon
-                backgroundColor: Colors.blue, // Customize background color
+                backgroundColor: Colors.black, // Customize background color
                 child: Icon(Icons.folder, color: Colors.white), // Icon with white color
               ),
               title: Text(
