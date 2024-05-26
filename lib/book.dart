@@ -146,6 +146,12 @@ class _BookState extends State<Book> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Group'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: _refreshPage,
+            ),
+          ],
           bottom: TabBar(
             tabs: [
               Tab(text: 'Info'),
@@ -502,6 +508,11 @@ class _BookState extends State<Book> {
         ),
       ),
     );
+  }
+
+  void _refreshPage() {
+    _loadAuthors();
+    setState(() {});
   }
 }
 
