@@ -67,6 +67,11 @@ class _BookState extends State<Book> {
     });
   }
 
+  void _updateGrupo() async {
+    await _dbService.updateGrupo(_idGrupo, _tituloController.text, _categoria);
+    print('Group updated!');
+  }
+
   bool _addingAnother = false;
 
   void _insertEntrada() async {
@@ -200,9 +205,7 @@ class _BookState extends State<Book> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
-                          // Placeholder for Update button action
-                        },
+                        onPressed: _updateGrupo, // Call the update method here
                         child: Text('Edit'),
                       ),
                       SizedBox(width: 20),

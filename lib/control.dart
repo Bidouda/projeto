@@ -164,4 +164,15 @@ class Control {
       whereArgs: [idEntrada],
     );
   }
+
+  Future<void> updateGrupo(int idGrupo, String titulo, int categoria) async {
+    Database db = await startDatabase();
+    await db.update(
+      'grupos',
+      {'titulo': titulo, 'categoria': categoria},
+      where: 'id_grupo = ?',
+      whereArgs: [idGrupo],
+    );
+    print('Grupo updated!');
+  }
 }
