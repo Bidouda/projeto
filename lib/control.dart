@@ -60,7 +60,6 @@ class Control {
         descricao_autor TEXT
       );
     ''');
-    await db.execute('INSERT INTO autores (descricao_autor) VALUES ("Unknown")');
     await db.execute('''
       CREATE TABLE entradas (
         id_entrada INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -98,8 +97,10 @@ class Control {
 
   Future<List<Map<String, dynamic>>> queryFind(String parametro) async {
     Database db = await startDatabase();
-    return await (db.rawQuery(
-        'SELECT * FROM grupos WHERE titulo LIKE' + "'%" + parametro + "%'"));
+    return await db.rawQuery(
+        'SELECT * FROM grupos WHERE titulo LIKE ? ORDER BY titulo',
+        ['%$parametro%']
+    );
   }
 
   Future<List<Map<String, dynamic>>> queryFindCategoria(int categoria) async {
@@ -129,7 +130,12 @@ class Control {
 
   Future<List<Map<String, dynamic>>> queryFindEntradas(String titulo) async {
     Database db = await startDatabase();
-    return await db.query('entradas', where: 'titulo LIKE ?', whereArgs: ['%$titulo%']);
+    return await db.query(
+        'entradas',
+        where: 'titulo LIKE ?',
+        whereArgs: ['%$titulo%'],
+        orderBy: 'titulo'
+    );
   }
 
   Future<Map<String, dynamic>?> getEntradaById(int idEntrada) async {
@@ -211,7 +217,12 @@ class Control {
 
   Future<List<Map<String, dynamic>>> queryFindAuthors(String authorName) async {
     Database db = await startDatabase();
-    return await db.query('autores', where: 'descricao_autor LIKE ?', whereArgs: ['%$authorName%']);
+    return await db.query(
+        'autores',
+        where: 'descricao_autor LIKE ?',
+        whereArgs: ['%$authorName%'],
+        orderBy: 'descricao_autor'
+    );
   }
 
   Future<Map<String, dynamic>?> getAuthorById(int idAutor) async {
