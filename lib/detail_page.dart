@@ -44,14 +44,16 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Form(
-          child: Column(
-            children: entrada?.entries.map((entry) =>  // Loop through all key-value pairs in entrada
-            TextFormField(
-              initialValue: entry.value.toString(), // Set initial value from map value
-              decoration: InputDecoration(labelText: entry.key), // Use key as label
+        child: SingleChildScrollView(
+          child: Form(
+            child: Column(
+              children: entrada?.entries.map((entry) =>
+                  TextFormField(
+                    initialValue: entry.value.toString(),
+                    decoration: InputDecoration(labelText: entry.key),
+                  ),
+              ).toList() ?? const [],
             ),
-            ).toList() ?? const [], // Empty list if entrada is null
           ),
         ),
       ),
