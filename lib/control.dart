@@ -208,4 +208,9 @@ class Control {
       return null;
     }
   }
+
+  Future<List<Map<String, dynamic>>> queryFindAuthors(String authorName) async {
+    Database db = await startDatabase();
+    return await db.query('autores', where: 'descricao_autor LIKE ?', whereArgs: ['%$authorName%']);
+  }
 }

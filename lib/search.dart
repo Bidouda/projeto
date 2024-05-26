@@ -19,11 +19,13 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   List<Map<String, dynamic>> _groupResults = [];
   List<Map<String, dynamic>> _bookResults = [];
   final Control _dbControl = Control();
+  final TextEditingController _authorSearchController = TextEditingController();
+  List<Map<String, dynamic>> _authorResults = [];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -56,6 +58,13 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     }
   }
 
+  Future<void> _searchAuthors() async {
+    final results = await _dbControl.queryFindAuthors(_authorSearchController.text);
+    setState(() {
+      _authorResults = results;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +78,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
           tabs: [
             Tab(text: "Groups"),
             Tab(text: "Books"),
+            Tab(text: "Authors"),
           ],
         ),
       ),
@@ -197,6 +207,53 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                               ),
                             ),
                           );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          // Authors Tab
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _authorSearchController,
+                        decoration: InputDecoration(
+                          labelText: "Author Name",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    ElevatedButton(
+                      onPressed: _searchAuthors,
+                      child: Text('Search'),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: _authorResults.isEmpty
+                    ? Center(child: Text('No authors found.'))
+                    : ListView.builder(
+                  itemCount: _authorResults.length,
+                  itemBuilder: (context, index) {
+                    final author = _authorResults[index];
+                    return Card(
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      child: ListTile(
+                        leading: Icon(Icons.person),
+                        title: Text(author['descricao_autor'], style: TextStyle(fontWeight: FontWeight.bold)),
+                        onTap: () {
+                          // Handle tapping on author card
                         },
                       ),
                     );
