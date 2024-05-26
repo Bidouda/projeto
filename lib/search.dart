@@ -11,7 +11,9 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
+  List<String?> _groupTitles = [];
   late final TabController _tabController;
+  final TextEditingController _bookSearchController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
   final TextEditingController _bookController = TextEditingController();
   List<Map<String, dynamic>> _groupResults = [];
@@ -40,10 +42,18 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _searchBooks() async {
-    final results = await _dbControl.queryFindEntradas(_bookController.text);
+    final results = await _dbControl.queryFindEntradas(_bookSearchController.text);
     setState(() {
       _bookResults = results;
     });
+
+    // Fetch group titles for each book entry
+    for (var book in _bookResults) {
+      final groupTitle = await _dbControl.getGroupTitleById(book['grupo']);
+      setState(() {
+        _groupTitles.add(groupTitle);
+      });
+    }
   }
 
   @override
@@ -140,7 +150,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        controller: _bookController,
+                        controller: _bookSearchController,
                         decoration: InputDecoration(
                           labelText: "Book Title",
                           border: OutlineInputBorder(),
@@ -162,6 +172,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   itemCount: _bookResults.length,
                   itemBuilder: (context, index) {
                     final book = _bookResults[index];
+                    final groupTitle = _groupTitles[index];
                     return Card(
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       child: ListTile(
@@ -173,6 +184,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                             SizedBox(height: 4),
                             Text('Position: ${book['posicao']}'),
                             Text('ID: ${book['id_entrada']}'),
+                            if (groupTitle != null) Text('Group: $groupTitle'), // Display group title
                           ],
                         ),
                         trailing: Icon(Icons.arrow_forward),

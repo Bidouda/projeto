@@ -193,4 +193,19 @@ class Control {
       );
     });
   }
+
+  Future<String?> getGroupTitleById(int idGrupo) async {
+    Database db = await startDatabase();
+    List<Map<String, dynamic>> groups = await db.query(
+      'grupos',
+      columns: ['titulo'],
+      where: 'id_grupo = ?',
+      whereArgs: [idGrupo],
+    );
+    if (groups.isNotEmpty) {
+      return groups.first['titulo'] as String?;
+    } else {
+      return null;
+    }
+  }
 }
