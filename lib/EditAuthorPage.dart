@@ -18,6 +18,7 @@ class _EditAuthorPageState extends State<EditAuthorPage> {
   @override
   void initState() {
     super.initState();
+    _authorController = TextEditingController();
     _loadAuthorDescription();
   }
 

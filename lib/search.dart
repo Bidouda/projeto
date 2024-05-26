@@ -3,6 +3,7 @@ import 'control.dart'; // Import the database service class
 import 'book.dart'; // Import the Book widget
 import 'detail_page.dart'; // Import the DetailPage widget
 import 'EditAuthorPage.dart';
+import 'main.dart'; // Import to access routeObserver
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -11,11 +12,11 @@ class Search extends StatefulWidget {
   State<Search> createState() => _SearchState();
 }
 
-class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
+class _SearchState extends State<Search> with SingleTickerProviderStateMixin, RouteAware {
   List<String?> _groupTitles = [];
   late final TabController _tabController;
-  final TextEditingController _bookSearchController = TextEditingController();
-  final TextEditingController _groupController = TextEditingController();
+  late final TextEditingController _bookSearchController = TextEditingController();
+  late final TextEditingController _groupController = TextEditingController();
   final TextEditingController _bookController = TextEditingController();
   List<Map<String, dynamic>> _groupResults = [];
   List<Map<String, dynamic>> _bookResults = [];
@@ -29,18 +30,31 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     _tabController = TabController(length: 3, vsync: this);
   }
 
-  Future<void> _refreshPage() async {
-    await _searchGroups();
-    await _searchBooks();
-    await _searchAuthors();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
     _tabController.dispose();
     _groupController.dispose();
     _bookController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Called when the current route has been popped off, meaning the user has navigated back to this page.
+    _refreshPage();
+  }
+
+  Future<void> _refreshPage() async {
+    await _searchGroups();
+    await _searchBooks();
+    await _searchAuthors();
   }
 
   Future<void> _searchGroups() async {
@@ -286,4 +300,3 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     );
   }
 }
-
