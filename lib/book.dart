@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'control.dart';
 import 'detail_page.dart';
+import 'main.dart'; // Import the main.dart file to access the routeObserver
 
 class Book extends StatefulWidget {
   final String titulo;
@@ -13,7 +14,7 @@ class Book extends StatefulWidget {
   _BookState createState() => _BookState();
 }
 
-class _BookState extends State<Book> {
+class _BookState extends State<Book> with RouteAware {
   late int _tipo;
   late int _autor;
   List<Map<String, dynamic>> _authors = [];
@@ -50,6 +51,15 @@ class _BookState extends State<Book> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ModalRoute? modalRoute = ModalRoute.of(context);
+    if (modalRoute != null) {
+      routeObserver.subscribe(this, modalRoute as PageRoute);
+    }
+  }
+
+  @override
   void dispose() {
     _tituloController.dispose();
     _posicaoController.dispose();
@@ -57,6 +67,7 @@ class _BookState extends State<Book> {
     _totalController.dispose();
     _inicioController.dispose();
     _fimController.dispose();
+    routeObserver.unsubscribe(this);
     super.dispose();
   }
 
@@ -121,8 +132,6 @@ class _BookState extends State<Book> {
       });
     }
   }
-
-
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
@@ -319,9 +328,11 @@ class _BookState extends State<Book> {
                         ),
                         SizedBox(width: 10),
                         ElevatedButton.icon(
-                          onPressed: _showInputFields ? () {
+                          onPressed: _showInputFields
+                              ? () {
                             _selectDate(context, _inicioController); // Call _selectDate method
-                          } : null,
+                          }
+                              : null,
                           icon: Icon(Icons.calendar_today),
                           label: Text('Select Start Date'),
                         ),
@@ -347,9 +358,11 @@ class _BookState extends State<Book> {
                         ),
                         SizedBox(width: 10),
                         ElevatedButton.icon(
-                          onPressed: _showInputFields ? () {
+                          onPressed: _showInputFields
+                              ? () {
                             _selectDate(context, _fimController); // Call _selectDate method
-                          } : null,
+                          }
+                              : null,
                           icon: Icon(Icons.calendar_today),
                           label: Text('Select End Date'),
                         ),
@@ -363,11 +376,13 @@ class _BookState extends State<Book> {
                     SizedBox(height: 8),
                     DropdownButton<int>(
                       value: _tipo,
-                      onChanged: _showInputFields ? (value) {
+                      onChanged: _showInputFields
+                          ? (value) {
                         setState(() {
                           _tipo = value!;
                         });
-                      } : null,
+                      }
+                          : null,
                       items: [
                         DropdownMenuItem(
                           value: 1,
@@ -399,11 +414,13 @@ class _BookState extends State<Book> {
                     SizedBox(height: 8),
                     DropdownButton<int>(
                       value: _autor,
-                      onChanged: _showInputFields ? (value) {
+                      onChanged: _showInputFields
+                          ? (value) {
                         setState(() {
                           _autor = value!;
                         });
-                      } : null,
+                      }
+                          : null,
                       items: _authors.map((author) {
                         return DropdownMenuItem<int>(
                           value: author['id_autor'],
@@ -417,7 +434,8 @@ class _BookState extends State<Book> {
                         onPressed: () {
                           _insertEntrada();
                         },
-                        child: Text(_addingAnother ? 'Add Another' : 'Add Entry'),
+                        child:
+                        Text(_addingAnother ? 'Add Another' : 'Add Entry'),
                       ),
                     ),
                     Visibility(
@@ -474,10 +492,12 @@ class _BookState extends State<Book> {
                         itemBuilder: (context, index) {
                           final book = books[index];
                           return Card(
-                            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16), // Updated margin
+                            margin: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16), // Updated margin
                             child: ListTile(
                               leading: Icon(Icons.book), // Updated leading icon
-                              title: Text(book['titulo'], style: TextStyle(fontWeight: FontWeight.bold)), // Updated title style
+                              title: Text(book['titulo'],
+                                  style: TextStyle(fontWeight: FontWeight.bold)), // Updated title style
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -513,6 +533,11 @@ class _BookState extends State<Book> {
   void _refreshPage() {
     _loadAuthors();
     setState(() {});
+  }
+
+  @override
+  void didPopNext() {
+    _refreshPage();
   }
 }
 
