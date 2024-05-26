@@ -104,7 +104,7 @@ class Control {
 
   Future<List<Map<String, dynamic>>> queryFindCategoria(int categoria) async {
     Database db = await startDatabase();
-    return await db.query('grupos', where: 'categoria = ?', whereArgs: [categoria]);
+    return await db.query('grupos', where: 'categoria = ?', whereArgs: [categoria], orderBy: 'titulo');
   }
 
   Future<void> insertEntrada(Map<String, dynamic> entrada) async {

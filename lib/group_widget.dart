@@ -44,18 +44,20 @@ class _GruposListViewState extends State<GruposListView> {
           final grupo = _grupos[index];
           return Card(
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            elevation: 4, // Add elevation for shadow effect
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10), // Add rounded corners
+            ),
             child: ListTile(
-              leading: Icon(Icons.folder),
-              title: Text(grupo.titulo, style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 4),
-                  Text('Category: ${grupo.categoria}'),
-                  Text('ID: ${grupo.idGrupo}'),
-                ],
+              contentPadding: EdgeInsets.all(16), // Add padding
+              leading: CircleAvatar( // Use CircleAvatar for rounded leading icon
+                backgroundColor: Colors.blue, // Customize background color
+                child: Icon(Icons.folder, color: Colors.white), // Icon with white color
               ),
-              trailing: Icon(Icons.arrow_forward),
+              title: Text(
+                grupo.titulo,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
