@@ -251,7 +251,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Expanded(
+                                        Expanded(
                       child: TextFormField(
                         controller: _authorSearchController,
                         decoration: InputDecoration(
@@ -272,26 +272,26 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                 child: _authorResults.isEmpty
                     ? Center(child: Text('No authors found.'))
                     : ListView.builder(
-                  itemCount: _authorResults.length,
-                  itemBuilder: (context, index) {
-                    final author = _authorResults[index];
-                    return Card(
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      child: ListTile(
-                        leading: Icon(Icons.person),
-                        title: Text(author['descricao_autor'], style: TextStyle(fontWeight: FontWeight.bold)),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditAuthorPage(idAutor: author['id_autor']),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
+                      itemCount: _authorResults.length,
+                      itemBuilder: (context, index) {
+                        final author = _authorResults[index];
+                        return Card(
+                          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          child: ListTile(
+                            leading: Icon(Icons.person),
+                            title: Text(author['descricao_autor'], style: TextStyle(fontWeight: FontWeight.bold)),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditAuthorPage(idAutor: author['id_autor']),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
               ),
             ],
           ),

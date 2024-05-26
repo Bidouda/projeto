@@ -503,7 +503,6 @@ class _BookState extends State<Book> with RouteAware {
                                 children: [
                                   SizedBox(height: 4),
                                   Text('Position: ${book['posicao']}'),
-                                  Text('ID: ${book['id_entrada']}'),
                                 ],
                               ), // Updated subtitle
                               trailing: Icon(Icons.arrow_forward), // Added trailing icon
