@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'control.dart'; // Import the database service class
 import 'book.dart'; // Import the Book widget
 import 'detail_page.dart'; // Import the DetailPage widget
+import 'EditAuthorPage.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -26,6 +27,12 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+  }
+
+  Future<void> _refreshPage() async {
+    await _searchGroups();
+    await _searchBooks();
+    await _searchAuthors();
   }
 
   @override
@@ -70,6 +77,13 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text("Search"),
+        actions: [
+          // Refresh button in the app bar
+          IconButton(
+            icon: Icon(Icons.refresh), // Icon for refresh
+            onPressed: _refreshPage, // Call _refreshPage method when pressed
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: false,
@@ -253,7 +267,12 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                         leading: Icon(Icons.person),
                         title: Text(author['descricao_autor'], style: TextStyle(fontWeight: FontWeight.bold)),
                         onTap: () {
-                          // Handle tapping on author card
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditAuthorPage(idAutor: author['id_autor']),
+                            ),
+                          );
                         },
                       ),
                     );

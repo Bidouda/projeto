@@ -213,4 +213,38 @@ class Control {
     Database db = await startDatabase();
     return await db.query('autores', where: 'descricao_autor LIKE ?', whereArgs: ['%$authorName%']);
   }
+
+  Future<Map<String, dynamic>?> getAuthorById(int idAutor) async {
+    Database db = await startDatabase();
+    List<Map<String, dynamic>> authors = await db.query(
+      'autores',
+      where: 'id_autor = ?',
+      whereArgs: [idAutor],
+    );
+    if (authors.isNotEmpty) {
+      return authors.first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> updateAuthorDescription(int idAutor, String newDescricaoAutor) async {
+    Database db = await startDatabase();
+    await db.update(
+      'autores',
+      {'descricao_autor': newDescricaoAutor},
+      where: 'id_autor = ?',
+      whereArgs: [idAutor],
+    );
+  }
+
+  Future<void> deleteAuthor(int idAutor) async {
+    Database db = await startDatabase();
+    await db.delete(
+      'autores',
+      where: 'id_autor = ?',
+      whereArgs: [idAutor],
+    );
+    print('Author deleted!');
+  }
 }
