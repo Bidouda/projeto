@@ -145,4 +145,23 @@ class Control {
       return null;
     }
   }
+
+  Future<void> updateEntrada(int idEntrada, Map<String, dynamic> updatedData) async {
+    Database db = await startDatabase();
+    await db.update(
+      'entradas',
+      updatedData,
+      where: 'id_entrada = ?',
+      whereArgs: [idEntrada],
+    );
+  }
+
+  Future<void> deleteEntrada(int idEntrada) async {
+    Database db = await startDatabase();
+    await db.delete(
+      'entradas',
+      where: 'id_entrada = ?',
+      whereArgs: [idEntrada],
+    );
+  }
 }
