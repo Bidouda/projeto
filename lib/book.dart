@@ -72,6 +72,15 @@ class _BookState extends State<Book> {
     print('Group updated!');
   }
 
+  void _deleteGrupo() async {
+    await _dbService.deleteGrupo(widget.idGrupo);
+    setState(() {
+      // Optionally, update the UI or show a confirmation message
+    });
+    print('Grupo deletado!');
+    Navigator.pop(context); // Navigate back to the previous screen
+  }
+
   bool _addingAnother = false;
 
   void _insertEntrada() async {
@@ -211,7 +220,7 @@ class _BookState extends State<Book> {
                       SizedBox(width: 20),
                       ElevatedButton(
                         onPressed: () {
-                          // Placeholder for Delete button action
+                          _deleteGrupo();  // Call the delete method here
                         },
                         child: Text('Delete'),
                       ),

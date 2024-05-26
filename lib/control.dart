@@ -175,4 +175,22 @@ class Control {
     );
     print('Grupo updated!');
   }
+
+  Future<void> deleteGrupo(int idGrupo) async {
+    Database db = await startDatabase();
+    await db.transaction((txn) async {
+      // Delete entries in 'entradas' that have grupo = idGrupo
+      await txn.delete(
+        'entradas',
+        where: 'grupo = ?',
+        whereArgs: [idGrupo],
+      );
+      // Delete the group itself
+      await txn.delete(
+        'grupos',
+        where: 'id_grupo = ?',
+        whereArgs: [idGrupo],
+      );
+    });
+  }
 }
