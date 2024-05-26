@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'home.dart';
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: Home(),
+      navigatorObservers: [routeObserver],
     );
   }
 }

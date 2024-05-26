@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'create.dart';
 import 'search.dart';
 import 'group_widget.dart';
+import 'main.dart'; // Import the file where routeObserver is defined
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,9 +11,32 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with RouteAware {
   int currentPageIndex = 0;
   final PageController _pageController = PageController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final route = ModalRoute.of(context);
+    if (route is PageRoute) {
+      routeObserver.subscribe(this, route);
+    }
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Called when the current route has been popped off, and the current route shows up
+    setState(() {
+      // Refresh the state when returning to this page
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
