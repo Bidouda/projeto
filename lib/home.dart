@@ -58,12 +58,6 @@ class _HomeState extends State<Home> with RouteAware {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {}); // Refresh the page by calling setState
-        },
-        child: Icon(Icons.refresh),
-      ),
       bottomNavigationBar: NavigationBar(
         destinations: [
           NavigationDestination(icon: Icon(Icons.book), label: 'Current'),

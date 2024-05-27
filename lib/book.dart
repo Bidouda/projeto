@@ -155,12 +155,6 @@ class _BookState extends State<Book> with RouteAware {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Group'),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: _refreshPage,
-            ),
-          ],
           bottom: TabBar(
             tabs: [
               Tab(text: 'Info'),

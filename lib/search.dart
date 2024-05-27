@@ -91,13 +91,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
     return Scaffold(
       appBar: AppBar(
         title: Text("Search"),
-        actions: [
-          // Refresh button in the app bar
-          IconButton(
-            icon: Icon(Icons.refresh), // Icon for refresh
-            onPressed: _refreshPage, // Call _refreshPage method when pressed
-          ),
-        ],
         bottom: TabBar(
           controller: _tabController,
           isScrollable: false,
