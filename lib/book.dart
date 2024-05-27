@@ -75,6 +75,9 @@ class _BookState extends State<Book> with RouteAware {
     final authors = await _dbService.getAllAuthors();
     setState(() {
       _authors = authors;
+      if (_authors.isNotEmpty) {
+        _autor = _authors.first['id_autor']; // Ensure _autor is set to a valid initial value
+      }
     });
   }
 
@@ -147,6 +150,9 @@ class _BookState extends State<Book> with RouteAware {
       });
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -408,13 +414,11 @@ class _BookState extends State<Book> with RouteAware {
                     SizedBox(height: 8),
                     DropdownButton<int>(
                       value: _autor,
-                      onChanged: _showInputFields
-                          ? (value) {
+                      onChanged: _showInputFields ? (value) {
                         setState(() {
                           _autor = value!;
                         });
-                      }
-                          : null,
+                      } : null,
                       items: _authors.map((author) {
                         return DropdownMenuItem<int>(
                           value: author['id_autor'],
