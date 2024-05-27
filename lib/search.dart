@@ -150,15 +150,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                       child: ListTile(
                         leading: Icon(Icons.folder),
                         title: Text(group['titulo'], style: TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 4),
-                            Text('Category: ${group['categoria']}'),
-                            Text('ID: ${group['id_grupo']}'),
-                          ],
-                        ),
-                        trailing: Icon(Icons.arrow_forward),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -221,7 +212,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                           children: [
                             SizedBox(height: 4),
                             Text('Position: ${book['posicao']}'),
-                            Text('ID: ${book['id_entrada']}'),
                             if (groupTitle != null) Text('Group: $groupTitle'), // Display group title
                           ],
                         ),
