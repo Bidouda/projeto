@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'grupo.dart';
 
 class Control {
-  static final _databaseName = "projeto.db";
+  static const _databaseName = "projeto.db";
   static Database? database;
 
   Control();
@@ -262,7 +262,7 @@ class Control {
     if (entries.isNotEmpty) {
       // Author is being used by an entry, show a SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Author cannot be deleted because they are being used by an entry!'),
           duration: Duration(seconds: 3),
         ),

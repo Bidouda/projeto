@@ -3,7 +3,7 @@ import 'control.dart';
 import 'grupo.dart';
 
 class Create extends StatefulWidget {
-  const Create({Key? key}) : super(key: key);
+  const Create({super.key});
 
   @override
   State<Create> createState() => _CreateState();
@@ -55,10 +55,10 @@ class _CreateState extends State<Create> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create"),
+        title: const Text("Create"),
         bottom: TabBar(
           controller: _tabController,
-          tabs: [
+          tabs: const [
             Tab(text: "Groups"),
             Tab(text: "Authors"),
           ],
@@ -76,53 +76,53 @@ class _CreateState extends State<Create> with SingleTickerProviderStateMixin {
 
   Widget _buildGroupsTab() {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextField(
             controller: _tituloController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Title",
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           DropdownButtonFormField(
             value: _selectedCategoria,
-            items: [
+            items: const [
               DropdownMenuItem(
-                child: Text("Current"),
                 value: 1,
+                child: Text("Current"),
               ),
               DropdownMenuItem(
-                child: Text("Paused"),
                 value: 2,
+                child: Text("Paused"),
               ),
               DropdownMenuItem(
-                child: Text("Completed"),
                 value: 3,
+                child: Text("Completed"),
               ),
               DropdownMenuItem(
-                child: Text("Dropped"),
                 value: 4,
+                child: Text("Dropped"),
               ),
               DropdownMenuItem(
-                child: Text("Planning"),
                 value: 5,
+                child: Text("Planning"),
               ),
             ],
             onChanged: (value) {
               setState(() {
-                _selectedCategoria = value as int?;
+                _selectedCategoria = value;
               });
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Select Category",
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
               if (_tituloController.text.isNotEmpty && _selectedCategoria != null) {
@@ -132,9 +132,9 @@ class _CreateState extends State<Create> with SingleTickerProviderStateMixin {
                 _handleError("Please enter a title and select a category.");
               }
             },
-            child: Text("Create"),
+            child: const Text("Create"),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           if (_showSuccessCard)
             Card(
               color: Colors.green.withOpacity(0.2),
@@ -158,18 +158,18 @@ class _CreateState extends State<Create> with SingleTickerProviderStateMixin {
 
   Widget _buildAuthorsTab() {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextField(
             controller: _autorController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: "Author Name",
               border: OutlineInputBorder(),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () async {
               if (_autorController.text.isNotEmpty) {
@@ -179,9 +179,9 @@ class _CreateState extends State<Create> with SingleTickerProviderStateMixin {
                 _handleError("Please enter an author name.");
               }
             },
-            child: Text("Create"),
+            child: const Text("Create"),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           if (_showSuccessCard)
             Card(
               color: Colors.green.withOpacity(0.2),

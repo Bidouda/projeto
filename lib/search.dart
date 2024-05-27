@@ -6,14 +6,14 @@ import 'EditAuthorPage.dart';
 import 'main.dart'; // Import to access routeObserver
 
 class Search extends StatefulWidget {
-  const Search({Key? key}) : super(key: key);
+  const Search({super.key});
 
   @override
   State<Search> createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> with SingleTickerProviderStateMixin, RouteAware {
-  List<String?> _groupTitles = [];
+  final List<String?> _groupTitles = [];
   late final TabController _tabController;
   late final TextEditingController _bookSearchController = TextEditingController();
   late final TextEditingController _groupController = TextEditingController();
@@ -90,13 +90,13 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Search"),
+        title: const Text("Search"),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: false,
           labelColor: Colors.black,
           unselectedLabelColor: Colors.grey,
-          tabs: [
+          tabs: const [
             Tab(text: "Groups"),
             Tab(text: "Books"),
             Tab(text: "Authors"),
@@ -117,32 +117,32 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                     Expanded(
                       child: TextFormField(
                         controller: _groupController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "Group Title",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: _searchGroups,
-                      child: Text('Search'),
+                      child: const Text('Search'),
                     ),
                   ],
                 ),
               ),
               Expanded(
                 child: _groupResults.isEmpty
-                    ? Center(child: Text('No groups found.'))
+                    ? const Center(child: Text('No groups found.'))
                     : ListView.builder(
                   itemCount: _groupResults.length,
                   itemBuilder: (context, index) {
                     final group = _groupResults[index];
                     return Card(
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       child: ListTile(
-                        leading: Icon(Icons.folder),
-                        title: Text(group['titulo'], style: TextStyle(fontWeight: FontWeight.bold)),
+                        leading: const Icon(Icons.folder),
+                        title: Text(group['titulo'], style: const TextStyle(fontWeight: FontWeight.bold)),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -173,42 +173,42 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                     Expanded(
                       child: TextFormField(
                         controller: _bookSearchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "Book Title",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: _searchBooks,
-                      child: Text('Search'),
+                      child: const Text('Search'),
                     ),
                   ],
                 ),
               ),
               Expanded(
                 child: _bookResults.isEmpty
-                    ? Center(child: Text('No books found.'))
+                    ? const Center(child: Text('No books found.'))
                     : ListView.builder(
                   itemCount: _bookResults.length,
                   itemBuilder: (context, index) {
                     final book = _bookResults[index];
                     final groupTitle = _groupTitles[index];
                     return Card(
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       child: ListTile(
-                        leading: Icon(Icons.book),
-                        title: Text(book['titulo'], style: TextStyle(fontWeight: FontWeight.bold)),
+                        leading: const Icon(Icons.book),
+                        title: Text(book['titulo'], style: const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text('Position: ${book['posicao']}'),
                             if (groupTitle != null) Text('Group: $groupTitle'), // Display group title
                           ],
                         ),
-                        trailing: Icon(Icons.arrow_forward),
+                        trailing: const Icon(Icons.arrow_forward),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -237,32 +237,32 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                                         Expanded(
                       child: TextFormField(
                         controller: _authorSearchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: "Author Name",
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: _searchAuthors,
-                      child: Text('Search'),
+                      child: const Text('Search'),
                     ),
                   ],
                 ),
               ),
               Expanded(
                 child: _authorResults.isEmpty
-                    ? Center(child: Text('No authors found.'))
+                    ? const Center(child: Text('No authors found.'))
                     : ListView.builder(
                       itemCount: _authorResults.length,
                       itemBuilder: (context, index) {
                         final author = _authorResults[index];
                         return Card(
-                          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                           child: ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text(author['descricao_autor'], style: TextStyle(fontWeight: FontWeight.bold)),
+                            leading: const Icon(Icons.person),
+                            title: Text(author['descricao_autor'], style: const TextStyle(fontWeight: FontWeight.bold)),
                             onTap: () {
                               Navigator.push(
                                 context,

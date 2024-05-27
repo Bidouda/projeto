@@ -5,7 +5,7 @@ import 'group_widget.dart';
 import 'main.dart'; // Import the file where routeObserver is defined
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -42,24 +42,24 @@ class _HomeState extends State<Home> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Bookmark"),
+        title: const Text("Bookmark"),
         actions: [
           IconButton(
             onPressed: () {
-              _openPage(context, Search());
+              _openPage(context, const Search());
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {
-              _openPage(context, Create());
+              _openPage(context, const Create());
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
       bottomNavigationBar: NavigationBar(
-        destinations: [
+        destinations: const [
           NavigationDestination(icon: Icon(Icons.book), label: 'Current'),
           NavigationDestination(icon: Icon(Icons.pause), label: 'Paused'),
           NavigationDestination(icon: Icon(Icons.done), label: 'Completed'),
@@ -82,11 +82,11 @@ class _HomeState extends State<Home> with RouteAware {
           });
         },
         children: [
-          _createPage(() => GruposListView(category: 1)), // Current
-          _createPage(() => GruposListView(category: 2)), // Paused
-          _createPage(() => GruposListView(category: 3)), // Completed
-          _createPage(() => GruposListView(category: 4)), // Dropped
-          _createPage(() => GruposListView(category: 5)), // Planning
+          _createPage(() => const GruposListView(category: 1)), // Current
+          _createPage(() => const GruposListView(category: 2)), // Paused
+          _createPage(() => const GruposListView(category: 3)), // Completed
+          _createPage(() => const GruposListView(category: 4)), // Dropped
+          _createPage(() => const GruposListView(category: 5)), // Planning
         ],
       ),
     );

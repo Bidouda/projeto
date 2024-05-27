@@ -4,7 +4,7 @@ import 'control.dart'; // Assuming this is where your database service is locate
 class DetailPage extends StatefulWidget {
   final int idEntrada;
 
-  DetailPage({required this.idEntrada});
+  const DetailPage({super.key, required this.idEntrada});
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -12,7 +12,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   Map<String, dynamic>? entrada;
-  Control _dbService = Control();
+  final Control _dbService = Control();
   List<Map<String, dynamic>> _authors = [];
   bool _isLoading = true;
 
@@ -87,12 +87,12 @@ class _DetailPageState extends State<DetailPage> {
       'autor': _autor,
     };
     await _dbService.updateEntrada(widget.idEntrada, updatedData);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Entry updated')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Entry updated')));
   }
 
   void _deleteEntrada() async {
     await _dbService.deleteEntrada(widget.idEntrada);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Entry deleted')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Entry deleted')));
     Navigator.pop(context); // Go back to the previous screen
   }
 
@@ -111,130 +111,130 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Page'),
+        title: const Text('Detail Page'),
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              const Text(
                 'Title:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _tituloController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter title',
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Position:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _posicaoController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter position',
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Progress:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _progressoController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter progress',
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Total:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _totalController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter total',
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Start Date:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _inicioController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter start date',
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton.icon(
                     onPressed: () {
                       _selectDate(context, _inicioController); // Call _selectDate method
                     },
-                    icon: Icon(Icons.calendar_today),
-                    label: Text('Select Start Date'),
+                    icon: const Icon(Icons.calendar_today),
+                    label: const Text('Select Start Date'),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'End Date:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _fimController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter end date',
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton.icon(
                     onPressed: () {
                       _selectDate(context, _fimController); // Call _selectDate method
                     },
-                    icon: Icon(Icons.calendar_today),
-                    label: Text('Select End Date'),
+                    icon: const Icon(Icons.calendar_today),
+                    label: const Text('Select End Date'),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Type:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               DropdownButton<int>(
                 value: _tipo,
                 onChanged: (value) {
@@ -242,7 +242,7 @@ class _DetailPageState extends State<DetailPage> {
                     _tipo = value!;
                   });
                 },
-                items: [
+                items: const [
                   DropdownMenuItem(
                     value: 1,
                     child: Text('Novel'),
@@ -265,12 +265,12 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Author:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               DropdownButton<int>(
                 value: _autor,
                 onChanged: (value) {
@@ -285,17 +285,17 @@ class _DetailPageState extends State<DetailPage> {
                   );
                 }).toList(),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
                     onPressed: _editEntrada,
-                    child: Text('Edit'),
+                    child: const Text('Edit'),
                   ),
                   ElevatedButton(
                     onPressed: _deleteEntrada,
-                    child: Text('Delete'),
+                    child: const Text('Delete'),
                   ),
                 ],
               ),

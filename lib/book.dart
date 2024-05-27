@@ -8,7 +8,7 @@ class Book extends StatefulWidget {
   final int categoria;
   final int idGrupo;
 
-  Book({required this.titulo, required this.categoria, required this.idGrupo});
+  const Book({super.key, required this.titulo, required this.categoria, required this.idGrupo});
 
   @override
   _BookState createState() => _BookState();
@@ -18,7 +18,7 @@ class _BookState extends State<Book> with RouteAware {
   late int _tipo;
   late int _autor;
   List<Map<String, dynamic>> _authors = [];
-  bool _isBookAdded = false;
+  final bool _isBookAdded = false;
   late TextEditingController _tituloController;
   late TextEditingController _tituloBooksController;
   late int _categoria;
@@ -30,7 +30,7 @@ class _BookState extends State<Book> with RouteAware {
   late TextEditingController _fimController;
   late bool _showInputFields = true;
 
-  Control _dbService = Control();
+  final Control _dbService = Control();
 
   @override
   void initState() {
@@ -157,8 +157,8 @@ class _BookState extends State<Book> with RouteAware {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Group'),
-          bottom: TabBar(
+          title: const Text('Group'),
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Info'),
               Tab(text: 'Insert'),
@@ -169,28 +169,28 @@ class _BookState extends State<Book> with RouteAware {
         body: TabBarView(
           children: [
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
+                  const Text(
                     'Titulo:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextField(
                     controller: _tituloController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter title',
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Categoria:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   DropdownButton<int>(
                     key: UniqueKey(),
                     value: _categoria,
@@ -199,7 +199,7 @@ class _BookState extends State<Book> with RouteAware {
                         _categoria = value!;
                       });
                     },
-                    items: [
+                    items: const [
                       DropdownMenuItem(
                         value: 1,
                         child: Text('Current'),
@@ -222,20 +222,20 @@ class _BookState extends State<Book> with RouteAware {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                         onPressed: _updateGrupo, // Call the update method here
-                        child: Text('Edit'),
+                        child: const Text('Edit'),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       ElevatedButton(
                         onPressed: () {
                           _deleteGrupo();  // Call the delete method here
                         },
-                        child: Text('Delete'),
+                        child: const Text('Delete'),
                       ),
                     ],
                   ),
@@ -244,134 +244,134 @@ class _BookState extends State<Book> with RouteAware {
             ),
             SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
+                    const Text(
                       'Title:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextField(
                       controller: _tituloBooksController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter title',
                       ),
                       enabled: _showInputFields,
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Position:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextField(
                       controller: _posicaoController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter position',
                       ),
                       enabled: _showInputFields,
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Progress:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextField(
                       controller: _progressoController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter progress',
                       ),
                       enabled: _showInputFields,
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Total:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     TextField(
                       controller: _totalController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter total',
                       ),
                       enabled: _showInputFields,
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Start Date:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: TextField(
                             controller: _inicioController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Enter start date',
                             ),
                             enabled: _showInputFields,
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ElevatedButton.icon(
                           onPressed: _showInputFields
                               ? () {
                             _selectDate(context, _inicioController); // Call _selectDate method
                           }
                               : null,
-                          icon: Icon(Icons.calendar_today),
-                          label: Text('Select Start Date'),
+                          icon: const Icon(Icons.calendar_today),
+                          label: const Text('Select Start Date'),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'End Date:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: TextField(
                             controller: _fimController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Enter end date',
                             ),
                             enabled: _showInputFields,
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ElevatedButton.icon(
                           onPressed: _showInputFields
                               ? () {
                             _selectDate(context, _fimController); // Call _selectDate method
                           }
                               : null,
-                          icon: Icon(Icons.calendar_today),
-                          label: Text('Select End Date'),
+                          icon: const Icon(Icons.calendar_today),
+                          label: const Text('Select End Date'),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Type:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     DropdownButton<int>(
                       key: UniqueKey(),
                       value: _tipo,
@@ -382,7 +382,7 @@ class _BookState extends State<Book> with RouteAware {
                         });
                       }
                           : null,
-                      items: [
+                      items: const [
                         DropdownMenuItem(
                           value: 1,
                           child: Text('Novel'),
@@ -405,12 +405,12 @@ class _BookState extends State<Book> with RouteAware {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Author:',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     DropdownButton<int>(
                       key: UniqueKey(),
                       value: _autor,
@@ -428,7 +428,7 @@ class _BookState extends State<Book> with RouteAware {
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -440,8 +440,8 @@ class _BookState extends State<Book> with RouteAware {
                     Visibility(
                       visible: _isBookAdded,
                       child: Container(
-                        margin: EdgeInsets.only(top: 20),
-                        padding: EdgeInsets.all(10),
+                        margin: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.green,
                           borderRadius: BorderRadius.circular(10),
@@ -450,11 +450,11 @@ class _BookState extends State<Book> with RouteAware {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 3,
                               blurRadius: 7,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Icon(Icons.check, color: Colors.white),
                             SizedBox(width: 10),
@@ -474,11 +474,11 @@ class _BookState extends State<Book> with RouteAware {
               future: _dbService.queryFindGrupo(_idGrupo),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No books found.'));
+                  return const Center(child: Text('No books found.'));
                 }
 
                 final books = snapshot.data!;
@@ -491,20 +491,20 @@ class _BookState extends State<Book> with RouteAware {
                         itemBuilder: (context, index) {
                           final book = books[index];
                           return Card(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 16), // Updated margin
                             child: ListTile(
-                              leading: Icon(Icons.book), // Updated leading icon
+                              leading: const Icon(Icons.book), // Updated leading icon
                               title: Text(book['titulo'],
-                                  style: TextStyle(fontWeight: FontWeight.bold)), // Updated title style
+                                  style: const TextStyle(fontWeight: FontWeight.bold)), // Updated title style
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 4),
+                                  const SizedBox(height: 4),
                                   Text('Position: ${book['posicao']}'),
                                 ],
                               ), // Updated subtitle
-                              trailing: Icon(Icons.arrow_forward), // Added trailing icon
+                              trailing: const Icon(Icons.arrow_forward), // Added trailing icon
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -541,6 +541,6 @@ class _BookState extends State<Book> with RouteAware {
 
 extension StringExtension on String {
   String capitalize() {
-    return this[0].toUpperCase() + this.substring(1);
+    return this[0].toUpperCase() + substring(1);
   }
 }
