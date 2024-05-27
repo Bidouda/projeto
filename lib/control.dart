@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/material.dart';
 import 'grupo.dart';
 
 class Control {
@@ -249,13 +250,33 @@ class Control {
     );
   }
 
-  Future<void> deleteAuthor(int idAutor) async {
+  Future<bool> deleteAuthor(int idAutor, BuildContext context) async {
     Database db = await startDatabase();
+    // Check if the author is being used by any entries
+    List<Map<String, dynamic>> entries = await db.query(
+      'entradas',
+      where: 'autor = ?',
+      whereArgs: [idAutor],
+    );
+
+    if (entries.isNotEmpty) {
+      // Author is being used by an entry, show a SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Author cannot be deleted because they are being used by an entry!'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return false; // Return false indicating deletion was not performed
+    }
+
+    // Author is not being used, proceed with deletion
     await db.delete(
       'autores',
       where: 'id_autor = ?',
       whereArgs: [idAutor],
     );
     print('Author deleted!');
+    return true; // Return true indicating deletion was successful
   }
 }

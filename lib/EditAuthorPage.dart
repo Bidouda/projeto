@@ -69,9 +69,11 @@ class _EditAuthorPageState extends State<EditAuthorPage> {
             TextButton(
               child: Text("Delete"),
               onPressed: () async {
-                await _dbControl.deleteAuthor(widget.idAutor);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop(); // Go back to previous screen
+                Navigator.of(context).pop(); // Close the confirmation dialog
+                bool canDelete = await _dbControl.deleteAuthor(widget.idAutor, context);
+                if (canDelete) {
+                  Navigator.of(context).pop(); // Go back to the previous screen if deletion is successful
+                }
               },
             ),
           ],

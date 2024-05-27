@@ -151,9 +151,6 @@ class _BookState extends State<Book> with RouteAware {
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -195,6 +192,7 @@ class _BookState extends State<Book> with RouteAware {
                   ),
                   SizedBox(height: 8),
                   DropdownButton<int>(
+                    key: UniqueKey(),
                     value: _categoria,
                     onChanged: (value) {
                       setState(() {
@@ -375,6 +373,7 @@ class _BookState extends State<Book> with RouteAware {
                     ),
                     SizedBox(height: 8),
                     DropdownButton<int>(
+                      key: UniqueKey(),
                       value: _tipo,
                       onChanged: _showInputFields
                           ? (value) {
@@ -413,12 +412,15 @@ class _BookState extends State<Book> with RouteAware {
                     ),
                     SizedBox(height: 8),
                     DropdownButton<int>(
+                      key: UniqueKey(),
                       value: _autor,
-                      onChanged: _showInputFields ? (value) {
+                      onChanged: _showInputFields
+                          ? (value) {
                         setState(() {
                           _autor = value!;
                         });
-                      } : null,
+                      }
+                          : null,
                       items: _authors.map((author) {
                         return DropdownMenuItem<int>(
                           value: author['id_autor'],
@@ -432,8 +434,7 @@ class _BookState extends State<Book> with RouteAware {
                         onPressed: () {
                           _insertEntrada();
                         },
-                        child:
-                        Text(_addingAnother ? 'Add Another' : 'Add Entry'),
+                        child: Text(_addingAnother ? 'Add Another' : 'Add Entry'),
                       ),
                     ),
                     Visibility(
