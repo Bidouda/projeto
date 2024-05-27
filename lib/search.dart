@@ -82,7 +82,8 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
   Future<void> _searchAuthors() async {
     final results = await _dbControl.queryFindAuthors(_authorSearchController.text);
     setState(() {
-      _authorResults = results;
+      // Filter out the author with id_autor of 1
+      _authorResults = results.where((author) => author['id_autor'] != 1).toList();
     });
   }
 
@@ -234,7 +235,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                                        Expanded(
+                    Expanded(
                       child: TextFormField(
                         controller: _authorSearchController,
                         decoration: const InputDecoration(
@@ -251,30 +252,30 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin, Ro
                   ],
                 ),
               ),
-              Expanded(
+              Expanded( // Place Expanded here
                 child: _authorResults.isEmpty
                     ? const Center(child: Text('No authors found.'))
                     : ListView.builder(
-                      itemCount: _authorResults.length,
-                      itemBuilder: (context, index) {
-                        final author = _authorResults[index];
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Text(author['descricao_autor'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditAuthorPage(idAutor: author['id_autor']),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                  itemCount: _authorResults.length,
+                  itemBuilder: (context, index) {
+                    final author = _authorResults[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      child: ListTile(
+                        leading: const Icon(Icons.person),
+                        title: Text(author['descricao_autor'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditAuthorPage(idAutor: author['id_autor']),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

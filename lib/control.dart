@@ -61,6 +61,7 @@ class Control {
         descricao_autor TEXT
       );
     ''');
+    await db.execute('INSERT INTO autores (descricao_autor) VALUES ("Unknown")');
     await db.execute('''
       CREATE TABLE entradas (
         id_entrada INTEGER PRIMARY KEY AUTOINCREMENT,
