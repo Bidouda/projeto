@@ -86,6 +86,61 @@ class _BookState extends State<Book> with RouteAware {
     print('Group updated!');
   }
 
+  TextEditingController _selectedAuthorController = TextEditingController();
+
+  void _selectAuthor(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Select Author',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 20.0),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: _authors.length,
+                itemBuilder: (context, index) {
+                  final author = _authors[index];
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        _autor = author['id_autor'];
+                        _selectedAuthorController.text = author['descricao_autor'];
+                      });
+                      Navigator.pop(context); // Close the bottom sheet when an author is selected
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.person, color: Colors.blue),
+                          SizedBox(width: 10.0),
+                          Text(
+                            author['descricao_autor'],
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _deleteGrupo() async {
     await _dbService.deleteGrupo(widget.idGrupo);
     setState(() {
@@ -411,22 +466,26 @@ class _BookState extends State<Book> with RouteAware {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButton<int>(
-                      key: UniqueKey(),
-                      value: _autor,
-                      onChanged: _showInputFields
-                          ? (value) {
-                        setState(() {
-                          _autor = value!;
-                        });
-                      }
-                          : null,
-                      items: _authors.map((author) {
-                        return DropdownMenuItem<int>(
-                          value: author['id_autor'],
-                          child: Text(author['descricao_autor']),
-                        );
-                      }).toList(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _selectedAuthorController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                              ),
+                              enabled: false,
+                              hintText: 'Selected author',
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10), // Add some spacing between the text field and the button
+                        ElevatedButton(
+                          onPressed: _showInputFields ? () => _selectAuthor(context) : null,
+                          child: Text('Select Author'),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Center(
