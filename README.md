@@ -1,7 +1,13 @@
 # Projeto
 
-Sistema Android desenvolvido em flutter com sqlite como exigência parcial para conclusão da disciplina em Laboratório de Engenharia de Software.
+Software de organização de leitura desenvolvido para Android com Flutter e SQlite.
 
 # Status
 
-- [x] Telas iniciais 
+- [x] Categorias
+- [x] Grupos
+- [x] Autores
+- [x] Livros
+- [ ] Releitura
+- [ ] Estatísticas
+- [ ] Importar/Exportar biblioteca
