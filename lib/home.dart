@@ -8,8 +8,6 @@ import 'import.dart';
 import 'main.dart'; // Import the file where routeObserver is defined
 import 'stats.dart'; // New import for Stats page
 import 'releases.dart'; // New import for Releases page
-import 'package:file_picker/file_picker.dart';
-import 'dart:io';
 
 Future<void> requestStoragePermission() async {
   PermissionStatus status = await Permission.manageExternalStorage.request();
@@ -181,6 +179,26 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               _openPage(context, const Create());
+            },
+          ),
+          Divider(
+            thickness: 1,
+            color: Colors.grey[300],
+          ),
+          ListTile(
+            leading: Icon(Icons.bar_chart, color: Colors.black), // Changed icon color to black
+            title: Text('Stats'), // Moved from below
+            onTap: () {
+              Navigator.pop(context);
+              _openPage(context, const StatsPage());
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.new_releases, color: Colors.black), // Changed icon color to black
+            title: Text('Releases'), // Moved from below
+            onTap: () {
+              Navigator.pop(context);
+              _openPage(context, const ReleasesPage());
             },
           ),
           Divider(

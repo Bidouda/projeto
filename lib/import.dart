@@ -42,12 +42,24 @@ class ImportExportPage extends StatelessWidget {
         title: Text('Import'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            Control().clearDatabases(); // Call clearDatabases method before import
-            await _importDatabase(context); // Call the import function when the button is pressed
-          },
-          child: Text('Import Database'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                Control().clearDatabases(); // Call clearDatabases method before import
+                await _importDatabase(context); // Call the import function when the button is pressed
+              },
+              child: Text('Replace Database'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                await _importDatabase(context); // Call the import function when the button is pressed
+              },
+              child: Text('Import Database'),
+            ),
+          ],
         ),
       ),
     );
