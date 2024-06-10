@@ -4,6 +4,7 @@ import 'control.dart';
 import 'create.dart';
 import 'search.dart';
 import 'group_widget.dart';
+import 'import.dart';
 import 'main.dart'; // Import the file where routeObserver is defined
 import 'stats.dart'; // New import for Stats page
 import 'releases.dart'; // New import for Releases page
@@ -36,35 +37,6 @@ Future<void> _exportDatabase(BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Error exporting database.'),
-        duration: Duration(seconds: 3),
-      ),
-    );
-  }
-}
-
-Future<void> _importDatabase(BuildContext context) async {
-  try {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['sql'], // Allow only database files
-    );
-
-    if (result != null) {
-      File file = File(result.files.single.path!);
-      Control control = Control();
-      await control.importDatabase(file);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Database imported successfully.'),
-          duration: Duration(seconds: 3),
-        ),
-      );
-    }
-  } catch (e) {
-    print("Error importing database: $e");
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Error importing database.'),
         duration: Duration(seconds: 3),
       ),
     );
@@ -216,32 +188,11 @@ class CustomDrawer extends StatelessWidget {
             color: Colors.grey[300],
           ),
           ListTile(
-            leading: Icon(Icons.bar_chart, color: Colors.black), // Changed icon color to black
-            title: Text('Stats'), // Moved from below
-            onTap: () {
-              Navigator.pop(context);
-              _openPage(context, const StatsPage());
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.new_releases, color: Colors.black), // Changed icon color to black
-            title: Text('Releases'), // Moved from below
-            onTap: () {
-              Navigator.pop(context);
-              _openPage(context, const ReleasesPage());
-            },
-          ),
-          Divider(
-            thickness: 1,
-            color: Colors.grey[300],
-          ),
-          ListTile(
             leading: Icon(Icons.import_export, color: Colors.black), // Changed icon color to black
             title: Text('Import'), // Changed text to "Import"
-            onTap: () async {
+            onTap: () {
               Navigator.pop(context);
-              await requestStoragePermission(); // Request permission before navigating
-              await _importDatabase(context); // Call _importDatabase method
+              _openPage(context, const ImportExportPage()); // Redirect to ImportExportPage
             },
           ),
           ListTile(
