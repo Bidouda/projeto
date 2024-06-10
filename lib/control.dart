@@ -81,6 +81,17 @@ class Control {
         FOREIGN KEY (autor) REFERENCES autores(id_autor)
       );
     ''');
+    await db.execute('''
+      CREATE TABLE releitura (
+        id_releitura INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_entrada INTEGER,
+        releitura INTEGER,
+        quantidade NUMERIC(10,2),
+        inicio DATE,
+        fim DATE,
+        FOREIGN KEY (id_entrada) REFERENCES entrada(id_entrada)
+      );
+    ''');
   }
 
   Future insertDatabase(Grupo grupo) async {
