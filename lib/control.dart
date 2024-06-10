@@ -291,4 +291,22 @@ class Control {
     print('Author deleted!');
     return true; // Return true indicating deletion was successful
   }
+
+  Future<void> clearDatabases() async {
+    if (database == null) {
+      return;
+    }
+
+    // Clearing grupos table
+    await database!.delete('grupos');
+
+    // Clearing entradas table
+    await database!.delete('entradas');
+
+    // Clearing releitura table
+    await database!.delete('releitura');
+
+    // Clearing autores table except for 'Unknown'
+    await database!.delete('autores', where: 'descricao_autor <> ?', whereArgs: ['Unknown']);
+  }
 }

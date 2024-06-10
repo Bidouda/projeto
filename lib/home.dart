@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'control.dart';
 import 'create.dart';
 import 'search.dart';
 import 'group_widget.dart';
@@ -207,6 +208,7 @@ class CustomDrawer extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         // Reset logic here
+                        Control().clearDatabases();
                         Navigator.pop(context);
                       },
                       child: Text('Reset'),
