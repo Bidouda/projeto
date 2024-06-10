@@ -208,8 +208,9 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.import_export, color: Colors.black), // Changed icon color to black
             title: Text('Import'), // Changed text to "Import"
-            onTap: () {
+            onTap: () async{
               Navigator.pop(context);
+              await requestStoragePermission(); // Request permission before navigating
               _openPage(context, const ImportExportPage()); // Redirect to ImportExportPage
             },
           ),
