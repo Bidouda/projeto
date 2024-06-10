@@ -42,6 +42,35 @@ Future<void> _exportDatabase(BuildContext context) async {
   }
 }
 
+Future<void> _importDatabase(BuildContext context) async {
+  try {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['sql'], // Allow only database files
+    );
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      Control control = Control();
+      await control.importDatabase(file);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Database imported successfully.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
+  } catch (e) {
+    print("Error importing database: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Error importing database.'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+}
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -212,7 +241,7 @@ class CustomDrawer extends StatelessWidget {
             onTap: () async {
               Navigator.pop(context);
               await requestStoragePermission(); // Request permission before navigating
-              //IMPORT LOGIC HERE
+              await _importDatabase(context); // Call _importDatabase method
             },
           ),
           ListTile(
@@ -257,6 +286,7 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+
   void _openPage(BuildContext context, Widget page) {
     Navigator.push(
       context,

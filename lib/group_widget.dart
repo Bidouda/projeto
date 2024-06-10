@@ -15,16 +15,26 @@ class GruposListView extends StatefulWidget {
 class _GruposListViewState extends State<GruposListView> {
   List<Grupo> _grupos = [];
   bool _isLoading = true;
+  bool _isMounted = false;
 
   @override
   void initState() {
     super.initState();
+    _isMounted = true; // Set mounted flag to true when initializing
     _fetchGrupos();
   }
 
+  @override
+  void dispose() {
+    _isMounted = false; // Set mounted flag to false when disposing
+    super.dispose();
+  }
+
   Future<void> _fetchGrupos() async {
+    if (!_isMounted) return; // Check if the widget is mounted
     Control control = Control();
     List<Map<String, dynamic>> result = await control.queryFindCategoria(widget.category);
+    if (!_isMounted) return; // Check again after async operation completes
     setState(() {
       _grupos = result.map((map) => Grupo.fromMap(map)).toList();
       _isLoading = false;
