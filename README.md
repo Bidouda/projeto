@@ -11,4 +11,4 @@ Software de organização de leitura desenvolvido para Android com Flutter e SQl
 - [ ] Releitura
 - [ ] Lançamentos
 - [ ] Estatísticas
-- [ ] Importar/Exportar/Limpar biblioteca
+- [x] Importar/Exportar/Limpar biblioteca

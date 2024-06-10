@@ -1,5 +1,8 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'dart:io';
 import 'grupo.dart';
 
 class Control {
@@ -308,5 +311,64 @@ class Control {
 
     // Clearing autores table except for 'Unknown'
     await database!.delete('autores', where: 'descricao_autor <> ?', whereArgs: ['Unknown']);
+  }
+
+  Future<void> exportToSQL() async {
+    try {
+      String dbPath = '/data/data/com.example.projeto/databasesprojeto.db'; // Update with the correct path
+
+      List<int> bytes = await File(dbPath).readAsBytes();
+
+      String downloadsPath = '/storage/self/primary/Download'; // Use the correct Downloads path
+      String sqlPath = join(downloadsPath, "exported_database.sql");
+      File sqlFile = File(sqlPath);
+      await sqlFile.writeAsBytes(bytes);
+
+      print("Database exported to SQL file: $sqlPath");
+    } catch (e) {
+      print("Error exporting database to SQL: $e");
+    }
+  }
+
+  Future<void> importDatabase(File importedDatabaseFile) async {
+    try {
+      // Open the imported database
+      Database importedDb = await openDatabase(importedDatabaseFile.path);
+
+      // Get the list of table names from the imported database
+      List<Map<String, dynamic>> tableNames = await importedDb.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+
+      // Iterate over each table
+      for (Map<String, dynamic> table in tableNames) {
+        String tableName = table['name'] as String;
+
+        // Skip system tables like 'android_metadata'
+        if (tableName == 'android_metadata' || tableName.startsWith('sqlite_')) {
+          continue;
+        }
+
+        // Retrieve data from the current table in the imported database
+        List<Map<String, dynamic>> tableData = await importedDb.query(tableName);
+
+        // Insert data into the corresponding table in the current database
+        Database currentDb = await startDatabase();
+        await currentDb.transaction((txn) async {
+          for (Map<String, dynamic> row in tableData) {
+            try {
+              await txn.insert(tableName, row);
+            } catch (e) {
+              print("Skipping duplicate entry in table $tableName: $e");
+            }
+          }
+        });
+      }
+
+      // Close the imported database
+      await importedDb.close();
+
+      print("Database content imported successfully.");
+    } catch (e) {
+      print("Error importing database content: $e");
+    }
   }
 }
