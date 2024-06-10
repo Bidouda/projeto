@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'control.dart';
 import 'create.dart';
 import 'search.dart';
@@ -8,6 +9,13 @@ import 'import.dart'; // New import for Import page
 import 'export.dart'; // New import for Export page
 import 'stats.dart'; // New import for Stats page
 import 'releases.dart'; // New import for Releases page
+
+Future<void> requestStoragePermission() async {
+  PermissionStatus status = await Permission.manageExternalStorage.request();
+  if (!status.isGranted) {
+    throw Exception("Storage permission not granted");
+  }
+}
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -176,16 +184,18 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.import_export, color: Colors.black), // Changed icon color to black
             title: Text('Import'), // Changed text to "Import"
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
+              await requestStoragePermission(); // Request permission before navigating
               _openPage(context, const ImportExportPage()); // Updated to ImportPage
             },
           ),
           ListTile(
             leading: Icon(Icons.file_download, color: Colors.black), // Changed icon color to black and added Export icon
             title: Text('Export'), // Added new "Export" button
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
+              await requestStoragePermission(); // Request permission before navigating
               _openPage(context, const ExportPage()); // Navigate to ExportPage
             },
           ),
@@ -222,7 +232,6 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
-
   void _openPage(BuildContext context, Widget page) {
     Navigator.push(
       context,
