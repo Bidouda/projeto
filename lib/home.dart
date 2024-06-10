@@ -5,15 +5,40 @@ import 'create.dart';
 import 'search.dart';
 import 'group_widget.dart';
 import 'main.dart'; // Import the file where routeObserver is defined
-import 'import.dart'; // New import for Import page
-import 'export.dart'; // New import for Export page
 import 'stats.dart'; // New import for Stats page
 import 'releases.dart'; // New import for Releases page
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 
 Future<void> requestStoragePermission() async {
   PermissionStatus status = await Permission.manageExternalStorage.request();
   if (!status.isGranted) {
     throw Exception("Storage permission not granted");
+  }
+}
+
+Future<void> _exportDatabase(BuildContext context) async {
+  try {
+    Control control = Control();
+    await control.startDatabase(); // Make sure the database is opened
+
+    // Call the exportToSQL function from the Control class
+    await control.exportToSQL();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Database exported to SQL file.'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  } catch (e) {
+    print("Error exporting database: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Error exporting database.'),
+        duration: Duration(seconds: 3),
+      ),
+    );
   }
 }
 
@@ -187,16 +212,16 @@ class CustomDrawer extends StatelessWidget {
             onTap: () async {
               Navigator.pop(context);
               await requestStoragePermission(); // Request permission before navigating
-              _openPage(context, const ImportExportPage()); // Updated to ImportPage
+              //IMPORT LOGIC HERE
             },
           ),
           ListTile(
             leading: Icon(Icons.file_download, color: Colors.black), // Changed icon color to black and added Export icon
-            title: Text('Export'), // Added new "Export" button
+            title: Text('Export'), // Changed text to "Export"
             onTap: () async {
               Navigator.pop(context);
               await requestStoragePermission(); // Request permission before navigating
-              _openPage(context, const ExportPage()); // Navigate to ExportPage
+              await _exportDatabase(context); // Call the export function
             },
           ),
           ListTile(
