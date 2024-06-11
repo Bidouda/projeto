@@ -12,6 +12,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  late int _rating; // Add this to hold the rating value
   Map<String, dynamic>? entrada;
   final Control _dbService = Control();
   List<Map<String, dynamic>> _authors = [];
@@ -35,6 +36,7 @@ class _DetailPageState extends State<DetailPage> {
     _totalController = TextEditingController();
     _inicioController = TextEditingController();
     _fimController = TextEditingController();
+    _rating = entrada?['notas'] ?? 1; // Initialize rating from entrada map
     _loadAuthors();
     _loadEntrada();
   }
@@ -50,6 +52,7 @@ class _DetailPageState extends State<DetailPage> {
       _fimController.text = entrada?['fim'] ?? '';
       _tipo = entrada?['tipo'] ?? 1;
       _autor = entrada?['autor'] ?? 1;
+      _rating = entrada?['notas'] ?? 1;
       _isLoading = false;
     });
   }
@@ -86,6 +89,7 @@ class _DetailPageState extends State<DetailPage> {
       'fim': _fimController.text,
       'tipo': _tipo,
       'autor': _autor,
+      'notas': _rating, // Add rating to the updatedData map
     };
     await _dbService.updateEntrada(widget.idEntrada, updatedData);
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Entry updated')));
@@ -266,6 +270,26 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ],
               ),
+              const Text(
+                'Rating:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              DropdownButton<int>(
+                value: _rating,
+                onChanged: (int? newValue) {
+                  setState(() {
+                    _rating = newValue!;
+                  });
+                },
+                items: List.generate(5, (index) {
+                  return DropdownMenuItem<int>(
+                    value: index + 1,
+                    child: Text((index + 1).toString()),
+                  );
+                }),
+              ),
+              const SizedBox(height: 20),
               const SizedBox(height: 20),
               const Text(
                 'Author:',

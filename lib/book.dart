@@ -16,6 +16,7 @@ class Book extends StatefulWidget {
 }
 
 class _BookState extends State<Book> with RouteAware {
+  late int _rating; // Add this to hold the rating value
   late int _tipo;
   late int _autor;
   List<Map<String, dynamic>> _authors = [];
@@ -45,7 +46,7 @@ class _BookState extends State<Book> with RouteAware {
     _totalController = TextEditingController();
     _inicioController = TextEditingController();
     _fimController = TextEditingController();
-
+    _rating = 1; // Initialize rating
     _tipo = 1;
     _autor = 1;
     _loadAuthors();
@@ -196,6 +197,7 @@ class _BookState extends State<Book> with RouteAware {
       'total': int.tryParse(_totalController.text) ?? 0,
       'inicio': _inicioController.text,
       'fim': _fimController.text,
+      'notas': _rating, // Add rating to the entrada map
     };
 
     if (!_addingAnother) {
@@ -212,6 +214,7 @@ class _BookState extends State<Book> with RouteAware {
         // Reset dropdown values
         _tipo = 1;
         _autor = 1;
+        _rating = 1; // Reset rating
         _showInputFields = false; // Hide input fields after adding entry
       });
       print('Entrada inserida!');
@@ -503,6 +506,26 @@ class _BookState extends State<Book> with RouteAware {
                         ),
                       ],
                     ),
+                    const Text(
+                      'Rating:',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    DropdownButton<int>(
+                      value: _rating,
+                      onChanged: (int? newValue) {
+                        setState(() {
+                          _rating = newValue!;
+                        });
+                      },
+                      items: List.generate(5, (index) {
+                        return DropdownMenuItem<int>(
+                          value: index + 1,
+                          child: Text((index + 1).toString()),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 20),
                     const SizedBox(height: 20),
                     const Text(
                       'Author:',

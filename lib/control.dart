@@ -77,6 +77,7 @@ class Control {
         total INTEGER,
         inicio DATE,
         fim DATE,
+        notas INTEGER CHECK (notas BETWEEN 1 AND 5),
         FOREIGN KEY (grupo) REFERENCES grupos(id_grupo),
         FOREIGN KEY (categoria) REFERENCES categorias(id_categoria),
         FOREIGN KEY (tipo) REFERENCES tipo(id_tipo),
