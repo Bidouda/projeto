@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io';
 import 'grupo.dart';
@@ -370,5 +369,55 @@ class Control {
     } catch (e) {
       print("Error importing database content: $e");
     }
+  }
+
+  Future<List<Map<String, dynamic>>> getRereadsByIdEntrada(int idEntrada) async {
+    Database db = await startDatabase();
+    return await db.query(
+      'releitura',
+      where: 'id_entrada = ?',
+      whereArgs: [idEntrada],
+      orderBy: 'inicio ASC',
+    );
+  }
+
+  Future<void> insertReread(Map<String, dynamic> rereadData) async {
+    Database db = await startDatabase();
+    await db.insert('releitura', rereadData);
+  }
+
+  Future<Map<String, dynamic>?> getRereadById(int idReread) async {
+    Database db = await startDatabase();
+    List<Map<String, dynamic>> rereads = await db.query(
+      'releitura',
+      where: 'id_releitura = ?',
+      whereArgs: [idReread],
+    );
+    if (rereads.isNotEmpty) {
+      return rereads.first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<void> deleteReread(int idReread) async {
+    Database db = await startDatabase();
+    await db.delete(
+      'releitura',
+      where: 'id_releitura = ?',
+      whereArgs: [idReread],
+    );
+    print('Reread deleted!');
+  }
+
+  Future<void> updateReread(int idReread, Map<String, dynamic> updatedData) async {
+    Database db = await startDatabase();
+    await db.update(
+      'releitura',
+      updatedData,
+      where: 'id_releitura = ?',
+      whereArgs: [idReread],
+    );
+    print('Reread updated!');
   }
 }

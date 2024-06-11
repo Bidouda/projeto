@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'control.dart'; // Assuming this is where your database service is located
+import 'rereads.dart';
 
 class DetailPage extends StatefulWidget {
   final int idEntrada;
@@ -296,6 +297,15 @@ class _DetailPageState extends State<DetailPage> {
                   ElevatedButton(
                     onPressed: _deleteEntrada,
                     child: const Text('Delete'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RereadsPage(idEntrada: widget.idEntrada)),
+                      );
+                    },
+                    child: const Text('Rereads'),
                   ),
                 ],
               ),
