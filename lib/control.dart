@@ -94,6 +94,15 @@ class Control {
         FOREIGN KEY (id_entrada) REFERENCES entrada(id_entrada)
       );
     ''');
+    await db.execute('''
+      CREATE TABLE lancamentos (
+        id_lancamento INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_grupo INTEGER,
+        titulo VARCHAR(200),
+        lancamento DATE,
+        FOREIGN KEY (id_grupo) REFERENCES grupos(id_grupo)
+      );
+    ''');
   }
 
   Future insertDatabase(Grupo grupo) async {
@@ -204,6 +213,12 @@ class Control {
       await txn.delete(
         'entradas',
         where: 'grupo = ?',
+        whereArgs: [idGrupo],
+      );
+      // Delete entries in 'lancamentos' that have id_grupo = idGrupo
+      await txn.delete(
+        'lancamentos',
+        where: 'id_grupo = ?',
         whereArgs: [idGrupo],
       );
       // Delete the group itself
@@ -420,4 +435,38 @@ class Control {
     );
     print('Reread updated!');
   }
+
+  Future<List<Map<String, dynamic>>> getLancamentos() async {
+    final Database db = await startDatabase();
+    return await db.rawQuery('''
+      SELECT lancamentos.id_lancamento, lancamentos.titulo AS lancamento_titulo,
+             lancamentos.lancamento, grupos.titulo AS grupo_titulo
+      FROM lancamentos
+      INNER JOIN grupos ON lancamentos.id_grupo = grupos.id_grupo
+      ORDER BY lancamentos.lancamento ASC
+    ''');
+  }
+
+  Future<void> deleteLancamento(int idLancamento) async {
+    final Database db = await startDatabase();
+    await db.delete(
+      'lancamentos',
+      where: 'id_lancamento = ?',
+      whereArgs: [idLancamento],
+    );
+  }
+
+  Future<void> insertLancamento(int idGrupo, String titulo, String lancamento) async {
+    await startDatabase();
+    await database!.insert(
+      'lancamentos',
+      {
+        'id_grupo': idGrupo,
+        'titulo': titulo,
+        'lancamento': lancamento,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
 }

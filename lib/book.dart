@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'control.dart';
 import 'detail_page.dart';
+import 'create_release.dart';
 import 'main.dart'; // Import the main.dart file to access the routeObserver
 
 class Book extends StatefulWidget {
@@ -84,6 +85,13 @@ class _BookState extends State<Book> with RouteAware {
   void _updateGrupo() async {
     await _dbService.updateGrupo(_idGrupo, _tituloController.text, _categoria);
     print('Group updated!');
+
+    // Show success snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Group updated successfully!'),
+      ),
+    );
   }
 
   TextEditingController _selectedAuthorController = TextEditingController();
@@ -142,13 +150,37 @@ class _BookState extends State<Book> with RouteAware {
   }
 
   void _deleteGrupo() async {
-    await _dbService.deleteGrupo(widget.idGrupo);
-    setState(() {
-      // Optionally, update the UI or show a confirmation message
-    });
-    print('Grupo deletado!');
-    Navigator.pop(context); // Navigate back to the previous screen
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Confirm Deletion"),
+          content: Text("Are you sure you want to delete this group?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _dbService.deleteGrupo(widget.idGrupo);
+                setState(() {
+                  // Optionally, update the UI or show a confirmation message
+                });
+                print('Grupo deletado!');
+                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); // Navigate back to the previous screen
+              },
+              child: Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
   }
+
 
   bool _addingAnother = false;
 
@@ -213,6 +245,17 @@ class _BookState extends State<Book> with RouteAware {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Group'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.access_time),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateReleasePage(idGrupo: widget.idGrupo)),
+                );
+              },
+            ),
+          ],
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Info'),
