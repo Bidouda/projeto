@@ -320,6 +320,9 @@ class Control {
     // Clearing entradas table
     await database!.delete('entradas');
 
+    // Clearing lancamentos table
+    await database!.delete('lancamentos');
+
     // Clearing releitura table
     await database!.delete('releitura');
 
