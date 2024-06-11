@@ -472,4 +472,20 @@ class Control {
     );
   }
 
+  Future<int> countEntradasByMonth(int year, int month) async {
+    final db = await startDatabase();
+
+    // Define the start and end dates for the specified month and year.
+    String startDate = "$year-${month.toString().padLeft(2, '0')}-01";
+    String endDate = "$year-${(month + 1).toString().padLeft(2, '0')}-01";
+
+    // Query to count entries with 'fim' date within the specified month and year.
+    List<Map<String, dynamic>> result = await db.rawQuery('''
+      SELECT COUNT(*) AS count FROM entradas 
+      WHERE fim >= ? AND fim < ?
+    ''', [startDate, endDate]);
+
+    // Return the count.
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
 }
