@@ -108,14 +108,14 @@ class Control {
 
   Future insertDatabase(Grupo grupo) async {
     Database db = await startDatabase();
-    String sql = "";
-    sql =
-    "INSERT INTO grupos (titulo, categoria) VALUES ('${grupo.titulo}', ${grupo.categoria});";
     try {
-      await db.rawInsert(sql);
+      await db.insert(
+        'grupos',
+        grupo.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
       print('Grupo inserido!');
-    }
-    finally {
+    } finally {
       //await db.close();
     }
   }
