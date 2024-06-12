@@ -489,4 +489,30 @@ class Control {
     // Return the count.
     return Sqflite.firstIntValue(result) ?? 0;
   }
+
+  Future<double> averageNotasByYear(int year) async {
+    final db = await startDatabase();
+
+    // Define the start and end dates for the specified year.
+    String startDate = "$year-01-01";
+    String endDate = "${year + 1}-01-01";
+
+    // Query to get all entries within the specified year based on end date (fim).
+    List<Map<String, dynamic>> entries = await db.rawQuery('''
+    SELECT notas FROM entradas 
+    WHERE fim >= ? AND fim < ?
+  ''', [startDate, endDate]);
+
+    // Calculate the total notas and count of entries.
+    int totalNotas = 0;
+    int entryCount = entries.length;
+    for (Map<String, dynamic> entry in entries) {
+      totalNotas += entry['notas'] as int;
+    }
+
+    // Calculate the average notas.
+    double averageNotas = entryCount > 0 ? totalNotas / entryCount : 0.0;
+
+    return averageNotas;
+  }
 }

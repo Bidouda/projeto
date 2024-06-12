@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'control.dart';
+import 'control.dart'; // Import your Control class
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +13,7 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   TextEditingController _yearController = TextEditingController();
   Map<int, int> _monthlyCounts = {};
+  double _averageRating = 0.0; // Variable to hold the average rating
 
   @override
   void dispose() {
@@ -31,8 +32,10 @@ class _StatsPageState extends State<StatsPage> {
       counts[month] = count;
     }
 
+    double averageRating = await control.averageNotasByYear(year); // Calculate the average rating
     setState(() {
       _monthlyCounts = counts;
+      _averageRating = averageRating; // Update the average rating state
     });
   }
 
@@ -92,14 +95,20 @@ class _StatsPageState extends State<StatsPage> {
             SizedBox(height: 24),
             if (_monthlyCounts.isNotEmpty) ...[
               Text(
-                'Average per Month: ${average.toStringAsFixed(2)} books',
+                'Average Monthly Books Read: ${average.toStringAsFixed(2)} books',
                 style: TextStyle(fontSize: 16, color: Colors.blueGrey),
               ),
               SizedBox(height: 8),
               Text(
+                'Average Yearly Rating: ${_averageRating.toStringAsFixed(2)}', // Display the average rating
+                style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+              ),
+              Text(
                 'Total Books: $totalBooks',
                 style: TextStyle(fontSize: 16, color: Colors.blueGrey),
               ),
+              SizedBox(height: 8), // Add some spacing
+
             ],
             SizedBox(height: 24),
             Expanded(
