@@ -193,8 +193,8 @@ class _BookState extends State<Book> with RouteAware {
       'tipo': _tipo,
       'autor': _autor,
       'posicao': double.tryParse(_posicaoController.text) ?? 0,
-      'progresso': int.tryParse(_progressoController.text) ?? 0,
-      'total': int.tryParse(_totalController.text) ?? 0,
+      'progresso': double.tryParse(_progressoController.text) ?? 0,
+      'total': double.tryParse(_totalController.text) ?? 0,
       'inicio': _inicioController.text,
       'fim': _fimController.text,
       'notas': _rating, // Add rating to the entrada map
