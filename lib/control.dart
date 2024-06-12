@@ -481,14 +481,25 @@ class Control {
     String endDate = "$year-${(month + 1).toString().padLeft(2, '0')}-01";
 
     // Query to count entries with 'fim' date within the specified month and year.
-    List<Map<String, dynamic>> result = await db.rawQuery('''
-      SELECT COUNT(*) AS count FROM entradas 
-      WHERE fim >= ? AND fim < ?
-    ''', [startDate, endDate]);
+    List<Map<String, dynamic>> entradasResult = await db.rawQuery('''
+    SELECT COUNT(*) AS count FROM entradas 
+    WHERE fim >= ? AND fim < ?
+  ''', [startDate, endDate]);
 
-    // Return the count.
-    return Sqflite.firstIntValue(result) ?? 0;
+    // Query to count releitura entries with 'fim' date within the specified month and year.
+    List<Map<String, dynamic>> releituraResult = await db.rawQuery('''
+    SELECT COUNT(*) AS count FROM releitura 
+    WHERE fim >= ? AND fim < ?
+  ''', [startDate, endDate]);
+
+    // Get counts from results.
+    int entradasCount = Sqflite.firstIntValue(entradasResult) ?? 0;
+    int releituraCount = Sqflite.firstIntValue(releituraResult) ?? 0;
+
+    // Return the total count (sum of entradas and releitura counts).
+    return entradasCount + releituraCount;
   }
+
 
   Future<double> averageNotasByYear(int year) async {
     final db = await startDatabase();
