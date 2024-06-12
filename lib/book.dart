@@ -192,7 +192,7 @@ class _BookState extends State<Book> with RouteAware {
       'categoria': _categoria,
       'tipo': _tipo,
       'autor': _autor,
-      'posicao': int.tryParse(_posicaoController.text) ?? 0,
+      'posicao': double.tryParse(_posicaoController.text) ?? 0,
       'progresso': int.tryParse(_progressoController.text) ?? 0,
       'total': int.tryParse(_totalController.text) ?? 0,
       'inicio': _inicioController.text,

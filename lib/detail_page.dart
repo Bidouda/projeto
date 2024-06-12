@@ -82,7 +82,7 @@ class _DetailPageState extends State<DetailPage> {
   void _editEntrada() async {
     final updatedData = {
       'titulo': _tituloController.text,
-      'posicao': int.tryParse(_posicaoController.text) ?? 0,
+      'posicao': double.tryParse(_posicaoController.text) ?? 0,
       'progresso': int.tryParse(_progressoController.text) ?? 0,
       'total': int.tryParse(_totalController.text) ?? 0,
       'inicio': _inicioController.text,

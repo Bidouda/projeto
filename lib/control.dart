@@ -72,7 +72,7 @@ class Control {
         categoria INTEGER,
         tipo INTEGER,
         autor INTEGER,
-        posicao INTEGER,
+        posicao NUMERIC(10,2),
         progresso INTEGER,
         total INTEGER,
         inicio DATE,
