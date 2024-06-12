@@ -4,7 +4,7 @@ import 'control.dart';
 class AddRereadPage extends StatefulWidget {
   final int idEntrada;
 
-  const AddRereadPage({Key? key, required this.idEntrada}) : super(key: key);
+  const AddRereadPage({super.key, required this.idEntrada});
 
   @override
   _AddRereadPageState createState() => _AddRereadPageState();
@@ -72,7 +72,7 @@ class _AddRereadPageState extends State<AddRereadPage> {
     };
 
     await _dbService.insertReread(rereadData);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text('Reread saved successfully!'),
     ));
     Navigator.pop(context);
@@ -82,31 +82,31 @@ class _AddRereadPageState extends State<AddRereadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Reread'),
+        title: const Text('Add Reread'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               'Start Date',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             ElevatedButton.icon(
-              icon: Icon(Icons.calendar_today),
+              icon: const Icon(Icons.calendar_today),
               label: Text(_selectedStartDate.toLocal().toString().split(' ')[0]),
               onPressed: () => _selectDate(context, true),
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'End Date',
               style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             ElevatedButton.icon(
-              icon: Icon(Icons.calendar_today),
+              icon: const Icon(Icons.calendar_today),
               label: Text(
                 _selectedEndDate != null
                     ? _selectedEndDate!.toLocal().toString().split(' ')[0]
@@ -114,25 +114,25 @@ class _AddRereadPageState extends State<AddRereadPage> {
               ),
               onPressed: () => _selectDate(context, false),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _quantidadeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Quantity',
                 border: OutlineInputBorder(),
               ),
               onChanged: (value) => _checkCanSave(),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: _canSave ? _saveReread : null,
-              child: Text('Save Reread'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _canSave ? Colors.black : Colors.grey,
                 foregroundColor: Colors.white,
-                textStyle: TextStyle(fontSize: 16.0),
+                textStyle: const TextStyle(fontSize: 16.0),
               ),
+              child: const Text('Save Reread'),
             ),
           ],
         ),

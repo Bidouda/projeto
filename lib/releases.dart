@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'control.dart';
 
 class ReleasesPage extends StatefulWidget {
-  const ReleasesPage({Key? key}) : super(key: key);
+  const ReleasesPage({super.key});
 
   @override
   _ReleasesPageState createState() => _ReleasesPageState();
@@ -15,14 +15,14 @@ class _ReleasesPageState extends State<ReleasesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this lancamento?'),
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this lancamento?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
               },
-              child: Text('No'),
+              child: const Text('No'),
             ),
             TextButton(
               onPressed: () async {
@@ -30,7 +30,7 @@ class _ReleasesPageState extends State<ReleasesPage> {
                 try {
                   await Control().deleteLancamento(idLancamento);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Lancamento deleted successfully.'),
                       duration: Duration(seconds: 2),
                     ),
@@ -40,12 +40,12 @@ class _ReleasesPageState extends State<ReleasesPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Error deleting lancamento: $e'),
-                      duration: Duration(seconds: 2),
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 }
               },
-              child: Text('Yes'),
+              child: const Text('Yes'),
             ),
           ],
         );
@@ -57,17 +57,17 @@ class _ReleasesPageState extends State<ReleasesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Releases'),
+        title: const Text('Releases'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: Control().getLancamentos(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No releases available'));
+            return const Center(child: Text('No releases available'));
           } else {
             final lancamentos = snapshot.data!;
             final today = DateTime.now();
@@ -79,12 +79,12 @@ class _ReleasesPageState extends State<ReleasesPage> {
                 final isPastLancamento = lancamentoDate.isBefore(today);
                 return Card(
                   elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     title: Text(
                       '${lancamento['grupo_titulo']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -92,12 +92,12 @@ class _ReleasesPageState extends State<ReleasesPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           'Title: ${lancamento['lancamento_titulo']}',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           'Date: ${lancamento['lancamento']}',
                           style: TextStyle(
@@ -110,7 +110,7 @@ class _ReleasesPageState extends State<ReleasesPage> {
                       ],
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: () {
                         _deleteLancamento(context, lancamento['id_lancamento']);
                       },

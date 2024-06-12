@@ -4,14 +4,14 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
 class StatsPage extends StatefulWidget {
-  const StatsPage({Key? key}) : super(key: key);
+  const StatsPage({super.key});
 
   @override
   _StatsPageState createState() => _StatsPageState();
 }
 
 class _StatsPageState extends State<StatsPage> {
-  TextEditingController _yearController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
   Map<int, int> _monthlyCounts = {};
   double _averageRating = 0.0; // Variable to hold the average rating
 
@@ -59,7 +59,7 @@ class _StatsPageState extends State<StatsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Stats'),
+        title: const Text('Stats'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,49 +68,49 @@ class _StatsPageState extends State<StatsPage> {
             Center(
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'Enter Year:',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: 150,
                     child: TextFormField(
                       controller: _yearController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _calculateMonthlyCounts,
-                    child: Text('Calculate Stats'),
+                    child: const Text('Calculate Stats'),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             if (_monthlyCounts.isNotEmpty) ...[
               Text(
                 'Average Monthly Books Read: ${average.toStringAsFixed(2)} books',
-                style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                style: const TextStyle(fontSize: 16, color: Colors.blueGrey),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'Average Yearly Rating: ${_averageRating.toStringAsFixed(2)}', // Display the average rating
-                style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                style: const TextStyle(fontSize: 16, color: Colors.blueGrey),
               ),
               Text(
                 'Total Books: $totalBooks',
-                style: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                style: const TextStyle(fontSize: 16, color: Colors.blueGrey),
               ),
-              SizedBox(height: 8), // Add some spacing
+              const SizedBox(height: 8), // Add some spacing
 
             ],
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             Expanded(
               child: _monthlyCounts.isNotEmpty
                   ? BarChart(
@@ -123,7 +123,7 @@ class _StatsPageState extends State<StatsPage> {
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
                         return BarTooltipItem(
                           '${monthNames[group.x - 1]}: ${rod.toY.round()} books',
-                          TextStyle(
+                          const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
@@ -134,12 +134,12 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                   titlesData: FlTitlesData(
                     show: true,
-                    topTitles: AxisTitles(
+                    topTitles: const AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: false,
                       ),
                     ),
-                    rightTitles: AxisTitles(
+                    rightTitles: const AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: false,
                       ),
@@ -153,7 +153,7 @@ class _StatsPageState extends State<StatsPage> {
                             axisSide: meta.axisSide,
                             child: Text(
                               monthNames[index].substring(0, 3),
-                              style: TextStyle(fontSize: 10),
+                              style: const TextStyle(fontSize: 10),
                             ),
                           );
                         },
@@ -190,7 +190,7 @@ class _StatsPageState extends State<StatsPage> {
                   }).toList(),
                 ),
               )
-                  : Center(
+                  : const Center(
                 child: Text(
                   'Enter a year and press "Calculate Stats" to see data',
                   textAlign: TextAlign.center,

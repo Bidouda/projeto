@@ -42,7 +42,7 @@ Future<void> _exportDatabase(BuildContext context) async {
 }
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> with RouteAware {
           ),
         ],
       ),
-      endDrawer: CustomDrawer(), // Use the CustomDrawer widget
+      endDrawer: const CustomDrawer(), // Use the CustomDrawer widget
       bottomNavigationBar: NavigationBar(
         destinations: const [
           NavigationDestination(icon: Icon(Icons.book), label: 'Current'),
@@ -143,18 +143,20 @@ class _HomeState extends State<Home> with RouteAware {
 
 // CustomDrawer Widget for better drawer design
 class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.black, // Background color for the header
             ),
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 'Options', // Changed "Menu" to "Options"
                 style: TextStyle(
@@ -166,16 +168,16 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.search, color: Colors.black), // Changed icon color to black
-            title: Text('Search'),
+            leading: const Icon(Icons.search, color: Colors.black), // Changed icon color to black
+            title: const Text('Search'),
             onTap: () {
               Navigator.pop(context);
               _openPage(context, const Search());
             },
           ),
           ListTile(
-            leading: Icon(Icons.add, color: Colors.black), // Changed icon color to black
-            title: Text('Create'),
+            leading: const Icon(Icons.add, color: Colors.black), // Changed icon color to black
+            title: const Text('Create'),
             onTap: () {
               Navigator.pop(context);
               _openPage(context, const Create());
@@ -186,16 +188,16 @@ class CustomDrawer extends StatelessWidget {
             color: Colors.grey[300],
           ),
           ListTile(
-            leading: Icon(Icons.bar_chart, color: Colors.black), // Changed icon color to black
-            title: Text('Stats'), // Moved from below
+            leading: const Icon(Icons.bar_chart, color: Colors.black), // Changed icon color to black
+            title: const Text('Stats'), // Moved from below
             onTap: () {
               Navigator.pop(context);
               _openPage(context, const StatsPage());
             },
           ),
           ListTile(
-            leading: Icon(Icons.new_releases, color: Colors.black), // Changed icon color to black
-            title: Text('Releases'), // Moved from below
+            leading: const Icon(Icons.new_releases, color: Colors.black), // Changed icon color to black
+            title: const Text('Releases'), // Moved from below
             onTap: () {
               Navigator.pop(context);
               _openPage(context, const ReleasesPage());
@@ -206,8 +208,8 @@ class CustomDrawer extends StatelessWidget {
             color: Colors.grey[300],
           ),
           ListTile(
-            leading: Icon(Icons.import_export, color: Colors.black), // Changed icon color to black
-            title: Text('Import'), // Changed text to "Import"
+            leading: const Icon(Icons.import_export, color: Colors.black), // Changed icon color to black
+            title: const Text('Import'), // Changed text to "Import"
             onTap: () async{
               Navigator.pop(context);
               await requestStoragePermission(); // Request permission before navigating
@@ -215,8 +217,8 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.file_download, color: Colors.black), // Changed icon color to black and added Export icon
-            title: Text('Export'), // Changed text to "Export"
+            leading: const Icon(Icons.file_download, color: Colors.black), // Changed icon color to black and added Export icon
+            title: const Text('Export'), // Changed text to "Export"
             onTap: () async {
               Navigator.pop(context);
               await requestStoragePermission(); // Request permission before navigating
@@ -224,20 +226,20 @@ class CustomDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.restore, color: Colors.black), // Changed icon color to black
-            title: Text('Reset'), // Moved from above
+            leading: const Icon(Icons.restore, color: Colors.black), // Changed icon color to black
+            title: const Text('Reset'), // Moved from above
             onTap: () {
               // Implement reset functionality
               Navigator.pop(context);
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Confirm Reset'),
-                  content: Text('Are you sure you want to reset all data? This action cannot be undone.'),
+                  title: const Text('Confirm Reset'),
+                  content: const Text('Are you sure you want to reset all data? This action cannot be undone.'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -245,7 +247,7 @@ class CustomDrawer extends StatelessWidget {
                         Control().clearDatabases();
                         Navigator.pop(context);
                       },
-                      child: Text('Reset'),
+                      child: const Text('Reset'),
                     ),
                   ],
                 ),

@@ -89,31 +89,31 @@ class _BookState extends State<Book> with RouteAware {
 
     // Show success snackbar
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Group updated successfully!'),
       ),
     );
   }
 
-  TextEditingController _selectedAuthorController = TextEditingController();
+  final TextEditingController _selectedAuthorController = TextEditingController();
 
   void _selectAuthor(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 'Select Author',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: _authors.length,
@@ -128,14 +128,14 @@ class _BookState extends State<Book> with RouteAware {
                       Navigator.pop(context); // Close the bottom sheet when an author is selected
                     },
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Row(
                         children: [
-                          Icon(Icons.person, color: Colors.blue),
-                          SizedBox(width: 10.0),
+                          const Icon(Icons.person, color: Colors.blue),
+                          const SizedBox(width: 10.0),
                           Text(
                             author['descricao_autor'],
-                            style: TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 16.0),
                           ),
                         ],
                       ),
@@ -155,14 +155,14 @@ class _BookState extends State<Book> with RouteAware {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirm Deletion"),
-          content: Text("Are you sure you want to delete this group?"),
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this group?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () async {
@@ -174,7 +174,7 @@ class _BookState extends State<Book> with RouteAware {
                 Navigator.pop(context); // Close the dialog
                 Navigator.pop(context); // Navigate back to the previous screen
               },
-              child: Text("Delete"),
+              child: const Text("Delete"),
             ),
           ],
         );
@@ -250,7 +250,7 @@ class _BookState extends State<Book> with RouteAware {
           title: const Text('Group'),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.access_time),
+              icon: const Icon(Icons.access_time),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -416,13 +416,19 @@ class _BookState extends State<Book> with RouteAware {
                     Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            controller: _inicioController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Enter start date',
+                          child: GestureDetector(
+                            onTap: () {}, // Prevents selection
+                            child: AbsorbPointer(
+                              child: TextField(
+                                controller: _inicioController,
+                                readOnly: true, // Makes the field read-only
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Enter start date',
+                                ),
+                                enabled: _showInputFields, // This controls whether the field should be active
+                              ),
                             ),
-                            enabled: _showInputFields,
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -446,13 +452,19 @@ class _BookState extends State<Book> with RouteAware {
                     Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            controller: _fimController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Enter end date',
+                          child: GestureDetector(
+                            onTap: () {}, // Prevents selection
+                            child: AbsorbPointer(
+                              child: TextField(
+                                controller: _fimController,
+                                readOnly: true, // Makes the field read-only
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Enter end date',
+                                ),
+                                enabled: _showInputFields, // This controls whether the field should be active
+                              ),
                             ),
-                            enabled: _showInputFields,
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -537,7 +549,7 @@ class _BookState extends State<Book> with RouteAware {
                         Expanded(
                           child: TextField(
                             controller: _selectedAuthorController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               ),
@@ -546,10 +558,10 @@ class _BookState extends State<Book> with RouteAware {
                             ),
                           ),
                         ),
-                        SizedBox(width: 10), // Add some spacing between the text field and the button
+                        const SizedBox(width: 10), // Add some spacing between the text field and the button
                         ElevatedButton(
                           onPressed: _showInputFields ? () => _selectAuthor(context) : null,
-                          child: Text('Select Author'),
+                          child: const Text('Select Author'),
                         ),
                       ],
                     ),

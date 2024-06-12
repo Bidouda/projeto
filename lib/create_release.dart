@@ -6,24 +6,24 @@ class CreateReleasePage extends StatefulWidget {
   final int idGrupo;
   final Control _dbService = Control();
 
-  CreateReleasePage({required this.idGrupo});
+  CreateReleasePage({super.key, required this.idGrupo});
 
   @override
   _CreateReleasePageState createState() => _CreateReleasePageState();
 }
 
 class _CreateReleasePageState extends State<CreateReleasePage> {
-  TextEditingController _tituloController = TextEditingController();
+  final TextEditingController _tituloController = TextEditingController();
   DateTime? _selectedDate;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Release'),
+        title: const Text('Create Release'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: _tituloController.text.isNotEmpty && _selectedDate != null
                 ? () {
               _showConfirmationDialog();
@@ -37,30 +37,30 @@ class _CreateReleasePageState extends State<CreateReleasePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Title:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextField(
               controller: _tituloController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter title',
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Release Date:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             InkWell(
               onTap: () {
                 _selectDate(context);
               },
               child: InputDecorator(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Select release date',
                 ),
@@ -72,7 +72,7 @@ class _CreateReleasePageState extends State<CreateReleasePage> {
                           ? '${_selectedDate!.year}-${_selectedDate!.month}-${_selectedDate!.day}'
                           : 'Select release date',
                     ),
-                    Icon(Icons.calendar_today),
+                    const Icon(Icons.calendar_today),
                   ],
                 ),
               ),
@@ -102,14 +102,14 @@ class _CreateReleasePageState extends State<CreateReleasePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirmation"),
-          content: Text("Are you sure you want to save this release?"),
+          title: const Text("Confirmation"),
+          content: const Text("Are you sure you want to save this release?"),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 "Cancel"
               ),
             ),
@@ -118,12 +118,12 @@ class _CreateReleasePageState extends State<CreateReleasePage> {
                 await _insertLancamento();
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Release saved successfully!'),
                   ),
                 );
               },
-              child: Text("Save"),
+              child: const Text("Save"),
             ),
           ],
         );

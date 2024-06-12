@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'control.dart'; // Import your Control class
 
 class ImportExportPage extends StatelessWidget {
-  const ImportExportPage({Key? key}) : super(key: key);
+  const ImportExportPage({super.key});
 
   Future<void> _importDatabase(BuildContext context) async {
     try {
@@ -39,7 +39,7 @@ class ImportExportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Import'),
+        title: const Text('Import'),
       ),
       body: Center(
         child: Column(
@@ -50,14 +50,14 @@ class ImportExportPage extends StatelessWidget {
                 Control().clearDatabases(); // Call clearDatabases method before import
                 await _importDatabase(context); // Call the import function when the button is pressed
               },
-              child: Text('Replace Database'),
+              child: const Text('Replace Database'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 await _importDatabase(context); // Call the import function when the button is pressed
               },
-              child: Text('Import Database'),
+              child: const Text('Import Database'),
             ),
           ],
         ),

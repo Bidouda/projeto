@@ -195,6 +195,7 @@ class _DetailPageState extends State<DetailPage> {
                         border: OutlineInputBorder(),
                         hintText: 'Enter start date',
                       ),
+                      readOnly: true, // Make this field readonly
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -222,6 +223,7 @@ class _DetailPageState extends State<DetailPage> {
                         border: OutlineInputBorder(),
                         hintText: 'Enter end date',
                       ),
+                      readOnly: true, // Make this field readonly
                     ),
                   ),
                   const SizedBox(width: 10),

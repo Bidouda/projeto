@@ -6,7 +6,7 @@ import 'EditRereadPage.dart';
 class RereadsPage extends StatefulWidget {
   final int idEntrada;
 
-  const RereadsPage({Key? key, required this.idEntrada}) : super(key: key);
+  const RereadsPage({super.key, required this.idEntrada});
 
   @override
   _RereadsPageState createState() => _RereadsPageState();
@@ -15,7 +15,7 @@ class RereadsPage extends StatefulWidget {
 class _RereadsPageState extends State<RereadsPage> {
   final Control _dbService = Control();
   late Future<List<Map<String, dynamic>>> _rereads;
-  bool _isLoading = true;
+  final bool _isLoading = true;
 
   @override
   void initState() {
@@ -31,19 +31,19 @@ class _RereadsPageState extends State<RereadsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rereads'),
+        title: const Text('Rereads'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _rereads,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             List<Map<String, dynamic>> rereads = snapshot.data!;
             if (rereads.isEmpty) {
-              return Center(child: Text('No rereads found for this entry.'));
+              return const Center(child: Text('No rereads found for this entry.'));
             } else {
               return ListView.builder(
                 itemCount: rereads.length,
@@ -66,13 +66,13 @@ class _RereadsPageState extends State<RereadsPage> {
                       }
                     },
                     child: Card(
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       elevation: 4,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ListTile(
-                        contentPadding: EdgeInsets.all(16),
+                        contentPadding: const EdgeInsets.all(16),
                         title: Text('Reread ${index + 1}'),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +89,7 @@ class _RereadsPageState extends State<RereadsPage> {
               );
             }
           } else {
-            return Center(child: Text('No rereads found for this entry.'));
+            return const Center(child: Text('No rereads found for this entry.'));
           }
         },
       ),
@@ -105,7 +105,7 @@ class _RereadsPageState extends State<RereadsPage> {
             _rereads = _getRereads(); // Refresh rereads data
           });
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
