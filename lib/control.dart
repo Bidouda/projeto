@@ -189,12 +189,26 @@ class Control {
 
   Future<void> deleteEntrada(int idEntrada) async {
     Database db = await startDatabase();
-    await db.delete(
-      'entradas',
-      where: 'id_entrada = ?',
-      whereArgs: [idEntrada],
-    );
+
+    await db.transaction((txn) async {
+      // Delete all releitura entries that have id_entrada = idEntrada
+      await txn.delete(
+        'releitura',
+        where: 'id_entrada = ?',
+        whereArgs: [idEntrada],
+      );
+
+      // Delete the entrada with the specified idEntrada
+      await txn.delete(
+        'entradas',
+        where: 'id_entrada = ?',
+        whereArgs: [idEntrada],
+      );
+    });
+
+    print('Entrada and associated Releitura entries deleted!');
   }
+
 
   Future<void> updateGrupo(int idGrupo, String titulo, int categoria) async {
     Database db = await startDatabase();
@@ -209,19 +223,39 @@ class Control {
 
   Future<void> deleteGrupo(int idGrupo) async {
     Database db = await startDatabase();
+
     await db.transaction((txn) async {
-      // Delete entries in 'entradas' that have grupo = idGrupo
+      // Get all entradas that belong to the group
+      List<Map<String, dynamic>> entradas = await txn.query(
+        'entradas',
+        where: 'grupo = ?',
+        whereArgs: [idGrupo],
+      );
+
+      // Delete all releituras associated with these entradas
+      for (var entrada in entradas) {
+        int idEntrada = entrada['id_entrada'] as int;
+        await txn.delete(
+          'releitura',
+          where: 'id_entrada = ?',
+          whereArgs: [idEntrada],
+        );
+      }
+
+      // Delete all entradas that belong to the group
       await txn.delete(
         'entradas',
         where: 'grupo = ?',
         whereArgs: [idGrupo],
       );
-      // Delete entries in 'lancamentos' that have id_grupo = idGrupo
+
+      // Delete all lancamentos that have id_grupo = idGrupo
       await txn.delete(
         'lancamentos',
         where: 'id_grupo = ?',
         whereArgs: [idGrupo],
       );
+
       // Delete the group itself
       await txn.delete(
         'grupos',
@@ -229,7 +263,10 @@ class Control {
         whereArgs: [idGrupo],
       );
     });
+
+    print('Grupo and all associated data deleted!');
   }
+
 
   Future<String?> getGroupTitleById(int idGrupo) async {
     Database db = await startDatabase();
